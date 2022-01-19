@@ -1,36 +1,49 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
+    <pre>{{ $data }}</pre>
     <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-vuex" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest" target="_blank" rel="noopener">unit-jest</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <p v-for="(name, index) in names" :key="name">
+      {{ index }} - {{ name.id }} - {{ name.firstName }}
+    </p>
+    <span v-for="name in names" :key="name.id">
+      <input type="checkbox" v-model="checkedNames" :value="name.firstName" />
+      <label for={{name.firstName}}>{{name.firstName}}</label>
+    </span>
+    <p v-if="checkedNames && checkedNames.length > 0"> Checked names: {{ checkedNames }} </p>
+  </div>
+
+  <div>
+    <h1> Counter </h1>
+    <input type="number" v-model.number="num1">
+    <span>+</span>
+    <input type="number" v-model.number="num2">
+    <span>=</span>
+    <span>{{ num1 + num2 }}</span>
+  </div>
+
+  <div>
+    <h1> Do you like tacos? </h1>
+    <input type="checkbox" v-model="tacos" value="positive" id="positive" />
+    <label for="positive">Yes</label>
+    <input type="checkbox" v-model="tacos" value="negative" id="negative" />
+    <label for="negative">No</label>
+    <p v-if="tacos.includes('positive')">Great! you like tacos</p>
+    <p v-else-if="tacos.includes('negative')">Boo! you must like tacos</p>
+  </div>
+
+  <div>
+    <h1>What is your favorite color? </h1>
+    <textarea v-model="color"></textarea>
+    <br/>
+    <button :class="[color ? activeClass : '']"> Let us know!</button>
+  </div>
+
+  <div>
+    <h1>Want to buy a backpack?</h1>
+    <button class="active" @click="counter > 0 ? counter -= 1 : 0"> - </button>
+    <span> Quantity: {{ counter }}</span>
+    <button class="active" @click="counter < 10 ? counter += 1 : counter"> + </button>
   </div>
 </template>
 
@@ -41,6 +54,22 @@ export default defineComponent({
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data () {
+    return {
+      num1: 0,
+      num2: 0,
+      total: 0,
+      checkedNames: [],
+      tacos: [],
+      color: '',
+      activeClass: 'active',
+      counter: 0,
+      names: [
+        { id: 'Person 0', firstName: 'John' }
+        // { id: 1, firstName: 'Paul' }
+      ]
+    }
   }
 })
 </script>
@@ -61,4 +90,16 @@ li {
 a {
   color: #42b983;
 }
+
+button {
+  border: none;
+  color: white;
+  padding: 0.5em 1em;
+  border-radius: 3px;
+}
+
+button.active {
+  background: orchid;
+}
+
 </style>
