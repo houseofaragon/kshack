@@ -2,6 +2,18 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <pre>{{ $data }}</pre>
+
+    <div class="comments">
+      <ul>
+        <li v-for="comment in comments" :key="comment">
+          {{ comment }}
+        </li>
+      </ul>
+      <input
+        v-model="newComment"
+        @keyup.enter="addComment"
+        placeholder="Enter message"/>
+    </div>
   </div>
 
 </template>
@@ -16,10 +28,19 @@ export default defineComponent({
   },
   data () {
     return {
-      num1: 0,
-      num2: 0,
-      comments: [],
-      counter: 0
+      newComment: '',
+      comments: []
+    }
+  },
+  methods: {
+    addComment () {
+      if (!this.newComment) {
+        return
+      }
+
+      const comments: string[] = this.comments ? this.comments : []
+      comments.push(this.newComment)
+      this.newComment = ''
     }
   }
 })
