@@ -9,7 +9,6 @@ function Overlay() {
   return (
     <>
       {ready && <App />}
-
       <div className={`fullscreen bg ${ready ? 'ready' : 'notready'} ${ready && 'clicked'}`}>
         <div className="stack">
           <button onClick={() => set(true)}>▶️</button>
@@ -17,6 +16,9 @@ function Overlay() {
       </div>
       <Header />
 
+
+
+      
     </>
   )
 }
