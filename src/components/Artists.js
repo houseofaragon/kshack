@@ -4,69 +4,68 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 
 import { ArtistImage } from './ArtistImage'
 
-const ArtistsWrapper = styled.div`
-  position: absolute;
-  top: 20vw;
-  left: 5vw;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-`
-
-const ArtistWrapper = styled.div`
-display: grid;
---column-gap: 2rem;
---row-gap: 10vh;
---mwidth: 400px;
---columns: 3;
-max-width: calc(var(--mwidth) * var(--columns) + (var(--columns) - 1) * var(--column-gap));
-width: 100%;
-margin: 0 auto;
-grid-template-columns: repeat(auto-fill, minmax(calc(var(--mwidth)/2), var(--mwidth)));
-grid-column-gap: var(--column-gap);
-grid-row-gap: var(--row-gap);
-justify-content: center;
-padding: 4rem 0 20rem;
-margin-top: 13rem;
-`
-const Number = styled.div`
-    position: absolute;
-`
-
 export const ARTISTS = [
-  { id: 1, name: "ronnie-makebelieve", album: "poop bum", song: "sleep.wav", description: "chill ronnies" },
-//   { id: 2, name: "sleep-300", album: "poop bum", song: "sleep.wav", description: "chill dudes" },
-//   { id: 3, name: "sleep-300", album: "poop bum",  song: "sleep.wav", description: "chill dudes" },
+  { id: 1,
+    name: "ronnie-makebelieve",
+    niceName: "Ronnie Makebelieve",
+    album: "Muon",
+    song: "sleep.wav",
+    released: "October 1, 2021",
+    art: "Selwa Abd",
+    masteredBy: "Stephan Mathieu",
+    producedBy: "Mike Sheffield and Jeremy Krinsley",
+    bandcampLink: "https://kshack.bandcamp.com/album/muon-kschk001"
+  },
+  { id: 2,
+    name: "sleep-300",
+    niceName: "Sleep 300",
+    album: "Reduction",
+    song: "sleep.wav",
+    released: "October 1, 2021",
+    art: "Selwa Abd",
+    masteredBy: "Stephan Mathieu",
+    producedBy: "Mike Sheffield and Jeremy Krinsley",
+    bandcampLink: "https://kshack.bandcamp.com/album/muon-kschk001"
+  },
+  { id: 3,
+    name: "504-aquatic",
+    niceName: "504 Aquatic",
+    album: "LoE3",
+    song: "sleep.wav",
+    released: "October 1, 2021",
+    art: "Selwa Abd",
+    masteredBy: "Stephan Mathieu",
+    producedBy: "Mike Sheffield and Jeremy Krinsley",
+    bandcampLink: "https://kshack.bandcamp.com/album/muon-kschk001"
+  },
 ];
 
 export function Artists() {
   return (
-    <ArtistsWrapper>
+    <div className='main-content'>
         {ARTISTS.map((artist, index) => {
             return <Artist artist={artist} index={index} key={index} />
         })}
-    </ArtistsWrapper>
+    </div>
   )
 }
 
 function Artist({artist, index}) {
     const imgSrc = `${artist.name}.png` 
     return (
-      <div className="item">
-            <Suspense fallback={<div>loading...</div>}>
-                <Canvas>
+      <a href={`/artists/${artist.name}`}>
+        <div className="item">
+          <span className="item__album">{artist.album}</span>
+          <h2 className="item__artist">{artist.niceName}</h2>
+          <section className="item__canvas">
+          <Suspense fallback={<div><img className="item__img" src={imgSrc} alt={`${artist.name} image`} /></div>}>
+                <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
                 <ArtistImage src={imgSrc} index={index} />
-
                 </Canvas>
             </Suspense>
-          <figure className="item__fig js-plane">
-            <div className="aspect" style={{aspect: "151.75%"}}></div>
-            <img className="item__img" src={imgSrc} alt={`${artist.name} image`} />
-          </figure>
-          <span className="item__pretitle">{artist.name}</span>
-          <h2 className="item__title">{artist.album}</h2>
-          <span className="item__counter">{artist.id < 10 ? `0${artist.id}` : artist.id}</span>
-          <p className="item__description">{artist.description}</p>
+          </section>
+          <span className="item__counter">kshck{artist.id < 10 ? `00${artist.id}` : artist.id}</span>
         </div>
+      </a>
     )
 }

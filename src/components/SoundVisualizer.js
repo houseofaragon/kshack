@@ -5,7 +5,7 @@ import { useAsset } from 'use-asset'
 
 export function SoundVisualizer(props) {  
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 2], fov: 25 }}>
+    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
       <Suspense fallback={null}>
         <Track position-z={0} url="/sleep.wav" />
