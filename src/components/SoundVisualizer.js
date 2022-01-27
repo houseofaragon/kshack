@@ -3,12 +3,12 @@ import { Suspense, useEffect, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useAsset } from 'use-asset'
 
-export function SoundVisualizer(props) {  
+export function SoundVisualizer({ready}) {  
   return (
     <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
       <Suspense fallback={null}>
-        <Track position-z={0} url="/sleep.wav" />
+        <Track position-z={0} url="/sleep.wav" ready={ready} />
         <Zoom url="/sleep.wav" />
       </Suspense>
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
@@ -19,7 +19,7 @@ export function SoundVisualizer(props) {
   )
 }
 
-function Track({ url, y = 2500, space = 1.8, width = 0.01, height = 0.05, obj = new THREE.Object3D(), ...props }) {
+function Track({ url, y = 2500, space = 1.8, width = 0.01, height = 0.05, obj = new THREE.Object3D(), ready = false,...props }) {
   const ref = useRef()
   // use-asset is the library that r3f uses internally for useLoader. It caches promises and
   // integrates them with React suspense. You can use it as-is with or without r3f.
@@ -32,16 +32,18 @@ function Track({ url, y = 2500, space = 1.8, width = 0.01, height = 0.05, obj = 
   }, [gain, context])
 
   useFrame((state) => {
-    let avg = update()
-    // Distribute the instanced planes according to the frequency daza
-    for (let i = 0; i < data.length; i++) {
-      obj.position.set(i * width * space - (data.length * width * space) / 2, data[i] / y, 0)
-      obj.updateMatrix()
-      ref.current.setMatrixAt(i, obj.matrix)
+    if (ready) {
+      let avg = update()
+      // Distribute the instanced planes according to the frequency daza
+      for (let i = 0; i < data.length; i++) {
+        obj.position.set(i * width * space - (data.length * width * space) / 2, data[i] / y, 0)
+        obj.updateMatrix()
+        ref.current.setMatrixAt(i, obj.matrix)
+      }
+      // Set the hue according to the frequency average
+      ref.current.material.color.setHSL(avg / 500, 0.75, 0.75)
+      ref.current.instanceMatrix.needsUpdate = true
     }
-    // Set the hue according to the frequency average
-    ref.current.material.color.setHSL(avg / 500, 0.75, 0.75)
-    ref.current.instanceMatrix.needsUpdate = true
   })
   return (
     <instancedMesh castShadow ref={ref} args={[null, null, data.length]} {...props}>

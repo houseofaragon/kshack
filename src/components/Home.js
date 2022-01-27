@@ -45,7 +45,7 @@ const BottomRight = styled.div`
   text-align: right;
 `
 
-const LeftMiddle = styled.div`
+export const LeftMiddle = styled.div`
   position: absolute;
   bottom: 50%;
   right: 6vw;

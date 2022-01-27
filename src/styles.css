@@ -7,7 +7,6 @@ body{
   height: 100%;
   margin: 0;
   padding: 0;
-  background: linear-gradient(15deg, rgb(215, 214, 223) 0%, rgb(244, 237, 238) 100%);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -15,7 +14,6 @@ body{
   -ms-user-select: none;
   user-select: none;
 }
-
 
 button {
   height: 32px;
@@ -39,11 +37,11 @@ button {
 }
 
 .fullscreen {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -59,40 +57,12 @@ button {
   color: #606060;
 }
 
-.fullscreen {
-  position: absolute;
-}
-
-.fullscreen .logout {
-  background: transparent;
-  border: none;
-  width: auto;
-  color: white;
-  display: block;
-  margin: 10px auto;
-}
-
-.fullscreen .continue-link {
-  text-decoration: none;
-  transition: all 1s;
-  width: 20%;
-  text-align: center;
-}
-
-.fullscreen.notready .continue-link {
-  cursor: auto;
-  color: #606060;
-}
-
-.fullscreen.ready .continue-link {
-  cursor: pointer;
-  color: white;
-}
-
 .fullscreen.clicked {
   pointer-events: none;
   opacity: 0;
-  position: fixed;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
   top: 0;
 }
 
@@ -158,6 +128,12 @@ button {
   flex-wrap: wrap;
 }
 
+.main-content.artist-info {
+  justify-content: left;
+  margin-left: 4.5vw;
+  z-index: 1000;
+}
+
 a {
   text-decoration: none;
   color: var(--color-link);
@@ -199,6 +175,10 @@ a:focus {
   width: 500px;                   
 }
 
+.item__img_small {
+  width: 150px;
+}
+
 .item__album {
   font-family: vortice-concept, sans-serif;
   font-weight: 100;
@@ -228,6 +208,14 @@ a:focus {
   position: absolute;
   bottom: 15px;
   right: 20px;
+  z-index: -1;
+}
+
+.sound-visualizer {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
 }
 

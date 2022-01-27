@@ -58,10 +58,10 @@ function Artist({artist, index}) {
           <span className="item__album">{artist.album}</span>
           <h2 className="item__artist">{artist.niceName}</h2>
           <section className="item__canvas">
-          <Suspense fallback={<div><img className="item__img" src={imgSrc} alt={`${artist.name} image`} /></div>}>
-                <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
+            <Suspense fallback={<div><img className="item__img" src={`/public/${imgSrc}`} alt={`${artist.name} image`} /></div>}>
+              <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
                 <ArtistImage src={imgSrc} index={index} />
-                </Canvas>
+              </Canvas>
             </Suspense>
           </section>
           <span className="item__counter">kshck{artist.id < 10 ? `00${artist.id}` : artist.id}</span>
