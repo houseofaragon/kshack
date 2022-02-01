@@ -17,9 +17,12 @@ import { fragmentShader, vertexShader}  from '../assets/shader.js'
 export function ArtistImage({src, index}) {
   const imageRef = useRef()
   const [hover, setHover] = useState(false);
-  const texture = useMemo(() => useLoader(TextureLoader, src))
   const plane = useMemo(() => <planeGeometry attach="geometry" args={[5, 5, 32, 32]} />)
 
+  const texture = useMemo(() => useLoader(TextureLoader, src))
+  texture.minFilter = THREE.LinearFilter;
+  texture.generateMipmaps = false;
+  
   const shaderMaterialData = useMemo(
       () => ({
           uniforms: {
@@ -33,7 +36,7 @@ export function ArtistImage({src, index}) {
       }),
       []
   )
-
+  
   /* https://onion2k.hashnode.dev/using-a-useframe-render-hook-in-react-three-fiber */
   useFrame((state, delta) => {
     if (imageRef && imageRef.current && hover) {
@@ -44,7 +47,6 @@ export function ArtistImage({src, index}) {
 
   function handlePointerOver() {
     setHover(true)
-    console.log(imageRef.current.material.uniforms)
     gsap.to(imageRef.current.material.uniforms.uProg, {
       // duration: 1,
       value: 1,

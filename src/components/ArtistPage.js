@@ -25,7 +25,10 @@ export function ArtistPage() {
   const currentArtist = ARTISTS.find(artist => artist.name === name)
   const nextArtist = ARTISTS.find(artist => artist.id === currentArtist.id + 1)
 
-  function handleButtonClick() {
+  function handleButtonClick(e) {
+    // console.log('clicked')
+    // e.preventDefault();
+    // e.stopPropagation();
     setReady(!ready)
   }
 
@@ -43,10 +46,10 @@ export function ArtistPage() {
           <p>kshck{currentArtist.id < 10 ? `00${currentArtist.id}` : currentArtist.id}</p>
 
           <p>Listen to {currentArtist.song}</p>
-          <button onClick={() => handleButtonClick()}>▶️</button>
+          <button onClick={(e) => handleButtonClick(e)}>▶️</button>
         </div>
       </div>
-      <div className='sound-visualizer'><SoundVisualizer ready={ready} /></div>
+      {ready && <div className='sound-visualizer'><SoundVisualizer ready={ready} /></div>}
       
       <RightLink>
         <a href={`/artists/${nextArtist.name}`}>

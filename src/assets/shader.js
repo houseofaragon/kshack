@@ -2,19 +2,50 @@ export const fragmentShader = `
 precision mediump float;
 
 varying vec2 vUv;
-uniform sampler2D uTexture;
+varying float wave;
 
+uniform sampler2D uTexture;
+uniform float uTime;
+uniform float uProg;
+uniform float uIndex;
+  
 void main() {
-  vec3 texture = texture2D(uTexture, vUv).rgb;
-  gl_FragColor = vec4(texture, 1.);
+  vec2 uv = vUv;
+  vec2 dUv = vec2(uv.x, uv.y);
+  vec3 textureNew;
+  
+  if (uIndex < 3.) {
+    float w = wave;
+    float r = texture(uTexture, dUv + vec2(0., 0.) + uProg * w * 0.05).r;
+    float g = texture(uTexture, dUv + vec2(0., 0.) + uProg * w * 0.0).g;
+    float b = texture(uTexture, dUv + vec2(0., 0.) + uProg * w * -0.02).b;
+    textureNew = vec3(r, g, b);    
+  } else if (uIndex < 6.) {
+    float count = 10.;
+    float smoothness = 0.5;
+    float pr = smoothstep(-smoothness, 0., dUv.y - (1. - uProg) * (1. + smoothness));
+    float s = 1. - step(pr, fract(count * dUv.y));
+    textureNew = texture(uTexture, dUv * s).rgb;
+  } else {
+    dUv.y += wave * 0.05;
+    float r = texture(uTexture, dUv + vec2(0., 0.)).r;
+    float g = texture(uTexture, dUv + vec2(0., 0.)).g;
+    float b = texture(uTexture, dUv + vec2(0., -0.02) * uProg).b;
+    textureNew = vec3(r, g, b);
+  }
+  
+  gl_FragColor = vec4(textureNew, 1.);
 }
 `
 
 export const vertexShader = `
 precision mediump float;
-
 varying vec2 vUv;
+
+varying float wave;
 uniform float uTime;
+uniform float uProg;
+uniform float uIndex;
 
 //
 // Description : Array and textureless GLSL 2D/3D/4D simplex
@@ -29,7 +60,7 @@ uniform float uTime;
 
 vec3 mod289(vec3 x) {
   return x - floor(x * (1.0 / 289.0)) * 289.0;
-}
+}           
 
 vec4 mod289(vec4 x) {
   return x - floor(x * (1.0 / 289.0)) * 289.0;
@@ -44,7 +75,7 @@ vec4 taylorInvSqrt(vec4 r)
   return 1.79284291400159 - 0.85373472095314 * r;
 }
 
-float snoise(vec3 v) {
+float noise(vec3 v) {
   const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
   const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
   
@@ -119,13 +150,21 @@ float snoise(vec3 v) {
 }
 
 void main() {
-  vUv = uv;
-
   vec3 pos = position;
-  float noiseFreq = 0.3;
-  float noiseAmp = 0.95; 
-  vec3 noisePos = vec3(pos.x, pos.y * noiseFreq, pos.z  + uTime);
-  pos.z += snoise(noisePos) * noiseAmp;
+
+  if (uIndex < 3.) {      
+    pos.z += noise(vec3(pos.x * 4. + uTime, pos.y, 0.)) * uProg;
+    wave = pos.z;
+    pos.z *= 3.;    
+  } else if (uIndex < 6.) {
+    float pr = smoothstep(0., 0.5 - sin(pos.y), uProg) * 5.;
+    pos.z += pr;
+  } else {
+    pos.z += sin(pos.y * 5. + uTime) * 2. * uProg;
+    wave = pos.z;
+  }
+
+  vUv = uv;
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.);
 }

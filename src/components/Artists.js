@@ -3,6 +3,7 @@ import { useMemo, Suspense } from 'react'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 
 import { ArtistImage } from './ArtistImage'
+import { useNavigate, Link } from 'react-router-dom';
 
 export const ARTISTS = [
   { id: 1,
@@ -50,10 +51,13 @@ export function Artists() {
   )
 }
 
+// const navigate = useNavigate();
 function Artist({artist, index}) {
-    const imgSrc = `${artist.name}.png` 
+    const imgSrc = `${artist.name} copy.png` 
+    const artistPagePath = `/artists/${artist.name}`;
+
     return (
-      <a href={`/artists/${artist.name}`}>
+      <Link to={artistPagePath}>
         <div className="item">
           <span className="item__album">{artist.album}</span>
           <h2 className="item__artist">{artist.niceName}</h2>
@@ -66,6 +70,6 @@ function Artist({artist, index}) {
           </section>
           <span className="item__counter">kshck{artist.id < 10 ? `00${artist.id}` : artist.id}</span>
         </div>
-      </a>
+        </Link>
     )
 }
