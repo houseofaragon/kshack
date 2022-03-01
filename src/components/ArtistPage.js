@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link, useRouteMatch, useParams } from 'react-router-dom'
-import { SoundVisualizer } from './SoundVisualizer'
+import { StaticTrack, SoundVisualizer } from './SoundVisualizer'
 import { ARTISTS } from './Artists'
 import { LeftMiddle } from './Home'
 import styled from 'styled-components'
@@ -19,18 +19,13 @@ export const RightLink = styled.div`
 `
 
 export function ArtistPage() {
+  const animate = useRef(false);
+
   const [ready, setReady] = useState(false)
   let { name } = useParams()
   
   const currentArtist = ARTISTS.find(artist => artist.name === name)
   const nextArtist = ARTISTS.find(artist => artist.id === currentArtist.id + 1)
-
-  function handleButtonClick(e) {
-    // console.log('clicked')
-    // e.preventDefault();
-    // e.stopPropagation();
-    setReady(!ready)
-  }
 
   return (
     <>
@@ -46,10 +41,16 @@ export function ArtistPage() {
           <p>kshck{currentArtist.id < 10 ? `00${currentArtist.id}` : currentArtist.id}</p>
 
           <p>Listen to {currentArtist.song}</p>
-          <button onClick={(e) => handleButtonClick(e)}>▶️</button>
+          <button onClick={() => {
+            setReady(!ready)}
+          }>▶️</button>
+            
         </div>
       </div>
-      {ready && <div className='sound-visualizer'><SoundVisualizer ready={ready} /></div>}
+      <div className='sound-visualizer'>
+        <SoundVisualizer animate={ready} />
+      </div>
+      
       
       <RightLink>
         <a href={`/artists/${nextArtist.name}`}>

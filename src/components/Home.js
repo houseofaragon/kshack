@@ -1,29 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-const TopLeft = styled.div`
-  position: absolute;
-  top: 6vw;
-  left: 6vw;
-  font-family: 'Inter, sans-serif';
-  font-weight: 400;
-  line-height: 1em;
-  letter-spacing: -0.01em;
-  font-size: 12px;
-  display: flex;
-  flex-direction: row;
-`
-const Logo = styled.div`
-    height: 60px;
-    width: 60px;
-    margin-right: 1vw;
-    background-image: url("/kshack-logo.jpg");
-`
-
-const Menu = styled.div`
-    display: flex;
-    flex-direction: row;
-`
 const BottomLeft = styled.div`
   position: absolute;
   bottom: 6vw;
@@ -67,33 +44,9 @@ const Bar = styled.div`
   background: #252525;
 `
 
-const Hamburger = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 6vw;
-  right: 6vw;
-  & > div {
-    position: relative;
-    width: 24px;
-    height: 2px;
-    background: #252525;
-    margin-bottom: 6px;
-  }
-`
-
 export function Home() {
   return (
     <>
-      <TopLeft>
-        {/* <i>K</i>
-        <br />
-        Shack */}
-        <Logo />
-        <Menu>
-            <Link to="/artists">Artists</Link>
-        </Menu>
-      </TopLeft>
       <BottomLeft>
         <Link to="/artists">Soundcloud</Link>
       </BottomLeft>

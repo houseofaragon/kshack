@@ -43,10 +43,10 @@ export const ARTISTS = [
 
 export function Artists() {
   return (
-    <div className='main-content'>
-        {ARTISTS.map((artist, index) => {
-            return <Artist artist={artist} index={index} key={index} />
-        })}
+    <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-40 content-center'>
+      {ARTISTS.map((artist, index) => {
+          return <Artist artist={artist} index={index} key={index} />
+      })}
     </div>
   )
 }
@@ -62,7 +62,10 @@ function Artist({artist, index}) {
           <span className="item__album">{artist.album}</span>
           <h2 className="item__artist">{artist.niceName}</h2>
           <section className="item__canvas">
-            <Suspense fallback={<div><img className="item__img" src={`/public/${imgSrc}`} alt={`${artist.name} image`} /></div>}>
+            <Suspense fallback={
+              <div>
+                <img className="item__img" src={`/public/${imgSrc}`} alt={`${artist.name} image`} />
+              </div>}>
               <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
                 <ArtistImage src={imgSrc} index={index} />
               </Canvas>
@@ -70,6 +73,6 @@ function Artist({artist, index}) {
           </section>
           <span className="item__counter">kshck{artist.id < 10 ? `00${artist.id}` : artist.id}</span>
         </div>
-        </Link>
+      </Link>
     )
 }

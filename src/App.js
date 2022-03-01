@@ -10,15 +10,17 @@ import { Header } from "./components/Header";
 import { Artists } from "./components/Artists";
   
 export default function App(props) {
-    return (
-        <Router>
-            <Header />
-            <Routes>
-                <Route path="/artists" element={<Artists />} />
-                <Route path="/artists/:name" element={<ArtistPage />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/" element={<Home />} />
-            </Routes>
-        </Router>
-    )
+	return (
+		<Router>
+			<div class="mx-12">
+				<Header />
+				<Routes>
+					<Route path="/artists" element={<Artists />} />
+					<Route path="/artists/:name" element={<ArtistPage />} />
+					<Route path="/about" element={<About />} />
+					<Route path="/" element={<Home />} />
+				</Routes>
+			</div>
+		</Router>
+	)
 }  

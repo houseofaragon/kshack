@@ -3,41 +3,47 @@ import { Suspense, useEffect, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { useAsset } from 'use-asset'
 
-export function SoundVisualizer({ready}) {
-  console.log('ready', ready)
+export function SoundVisualizer({animate}) {
   return (
     <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
       <Suspense fallback={null}>
-        <Track position-z={0} url="/sleep.wav" ready={ready} />
+        <Track position-z={0} url="/sleep.wav" animate={animate} />
         {/* <Zoom url="/sleep.wav" /> */}
       </Suspense>
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
         <planeGeometry />
-        <shadowMaterial transparent opacity={0.15} />
+        <shadowMaterial transparent opacity={0.05} />
       </mesh>
     </Canvas>
   )
 }
 
-function Track({ url, y = 2500, space = 2.8, width = 0.01, height = 0.05, obj = new THREE.Object3D(), ready = false,...props }) {
+function Track({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate,...props }) {
   const ref = useRef()
   // use-asset is the library that r3f uses internally for useLoader. It caches promises and
   // integrates them with React suspense. You can use it as-is with or without r3f.
   const { gain, context, update, data } = useAsset(() => createAudio(url), url)
+
   useEffect(() => {
     // Connect the gain node, which plays the audio
     gain.connect(context.destination)
+
+      if (!animate && context.state === 'running') {
+        context.suspend()
+      } else if (context.state === 'suspended') {
+        context.resume()
+      }
     // Disconnect it on unmount
     return () => gain.disconnect()
-  }, [gain, context])
+  }, [gain, context, animate])
   
   useFrame((state) => {
-    if (ready) {
+    if (animate) {
       let avg = update()
       // Distribute the instanced planes according to the frequency daza
       for (let i = 0; i < data.length; i++) {
-        obj.position.set(i * width * space - (data.length * width * space) / 2, data[i] / y, 0)
+        obj.position.set(i * width * space - (data.length * width * space) / 2, data[i] / y * 2, 0)
         obj.updateMatrix()
         ref.current.setMatrixAt(i, obj.matrix)
       }
@@ -46,23 +52,15 @@ function Track({ url, y = 2500, space = 2.8, width = 0.01, height = 0.05, obj = 
       ref.current.instanceMatrix.needsUpdate = true
     }
   })
+
   return (
     <instancedMesh castShadow ref={ref} args={[null, null, data.length]} {...props}>
-      <planeGeometry args={[width, height]} />
+      <sphereBufferGeometry attach="geometry" args={[0.01, 32, 64]} />
+
+      {/* <planeGeometry args={[width, height]} /> */}
       <meshBasicMaterial toneMapped={false} />
     </instancedMesh>
   )
-}
-
-function Zoom({ url }) {
-  // This will *not* re-create a new audio source, suspense is always cached,
-  // so this will just access (or create and then cache) the source according to the url
-  const { data } = useAsset(() => createAudio(url), url)
-  return useFrame((state) => {
-    // Set the cameras field of view according to the frequency average
-    state.camera.fov = 25 - data.avg / 15
-    state.camera.updateProjectionMatrix()
-  })
 }
 
 async function createAudio(url) {
@@ -76,12 +74,15 @@ async function createAudio(url) {
   // This is why it doesn't run in Safari 🍏🐛. Start has to be called in an onClick event
   // which makes it too awkward for a little demo since you need to load the async data first
   source.start(0)
+
   // Create gain node and an analyser
   const gain = context.createGain()
   const analyser = context.createAnalyser()
   analyser.fftSize = 64
   source.connect(analyser)
   analyser.connect(gain)
+
+
   // The data array receive the audio frequencies
   const data = new Uint8Array(analyser.frequencyBinCount)
   return {
@@ -96,4 +97,22 @@ async function createAudio(url) {
       return (data.avg = data.reduce((prev, cur) => prev + cur / data.length, 0))
     },
   }
+}
+
+export function StaticTrack({ y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D() }) {
+  const ref = useRef()
+
+  for (let i = 0; i < 40; i++) {
+    obj.position.set(i * width * space - (40 * width * space) / 2, 0, 0)
+  }
+  // Set the hue according to the frequency average
+  // ref.current.material.color.setHSL(500, 0.75, 0.75)
+  // ref.current.instanceMatrix.needsUpdate = true
+
+  return (
+    <instancedMesh castShadow ref={ref} args={[null, null, 40]}>
+      <sphereBufferGeometry attach="geometry" args={[0.01, 32, 64]} />
+      <meshBasicMaterial toneMapped={false} />
+    </instancedMesh>
+  )
 }
