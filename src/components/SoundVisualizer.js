@@ -1,19 +1,19 @@
 import * as THREE from 'three'
-import { Suspense, useEffect, useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { useEffect, useRef } from 'react'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { useAsset } from 'use-asset'
 
-export function SoundVisualizer({animate}) {
+export function SoundVisualizer({animate, artistImgSrc}) {
+  const texture = useLoader(THREE.TextureLoader, artistImgSrc)
+
   return (
     <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
-      <Suspense fallback={null}>
-        <Track position-z={0} url="/sleep.wav" animate={animate} />
-        {/* <Zoom url="/sleep.wav" /> */}
-      </Suspense>
+      <Track position-z={0} url="/sleep.wav" animate={animate} />
       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
-        <planeGeometry />
+        <planeBufferGeometry receiveShadow attach="geometry" args={[0.8, 0.8]} />
         <shadowMaterial transparent opacity={0.05} />
+        <meshBasicMaterial attach="material" map={texture} />
       </mesh>
     </Canvas>
   )
@@ -56,7 +56,6 @@ function Track({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = ne
   return (
     <instancedMesh castShadow ref={ref} args={[null, null, data.length]} {...props}>
       <sphereBufferGeometry attach="geometry" args={[0.01, 32, 64]} />
-
       {/* <planeGeometry args={[width, height]} /> */}
       <meshBasicMaterial toneMapped={false} />
     </instancedMesh>

@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { Canvas, useLoader } from '@react-three/fiber'
+import * as THREE from 'three'
+import { Suspense } from 'react'
 
 const BottomLeft = styled.div`
   position: absolute;
@@ -43,10 +46,24 @@ const Bar = styled.div`
   height: ${(props) => (props.vertical ? '150px' : '2px')};
   background: #252525;
 `
+function MainImage() {
+  const texture = useLoader(THREE.TextureLoader, '../../504-aquatic copy.png')
+
+  return (
+    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
+      <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
+      <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
+        <planeBufferGeometry receiveShadow attach="geometry" args={[0.5, 0.5]} />
+        <meshBasicMaterial attach="material" map={texture} />
+      </mesh>
+    </Canvas>
+  )
+}
 
 export function Home() {
   return (
     <>
+
       <BottomLeft>
         <Link to="/artists">Soundcloud</Link>
       </BottomLeft>
@@ -56,6 +73,13 @@ export function Home() {
       <LeftMiddle>An excellent shack.</LeftMiddle>
       <Bar />
       <Bar vertical />
+      <Suspense fallback={
+        <div>...</div>}
+      >
+        <div>
+          <MainImage />
+        </div>
+      </Suspense>
     </>
   )
 }

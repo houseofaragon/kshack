@@ -26,9 +26,8 @@ button {
   font: inherit;
   cursor: pointer;
   outline: inherit;
-  background: white;
+  background: rgb(238, 237, 237);
   border: 1px solid transparent;
-  border-bottom: 3px solid #a0a0a0;
   border-radius: 3px;
   padding: 8px 24px;
   color: black;
@@ -134,7 +133,6 @@ button {
 
 .main-content.artist-info {
   justify-content: left;
-  margin-left: 4.5vw;
   z-index: 1000;
 }
 

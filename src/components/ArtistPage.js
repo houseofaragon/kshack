@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { Suspense, useRef, useState } from 'react'
 import { Link, useRouteMatch, useParams } from 'react-router-dom'
 import { StaticTrack, SoundVisualizer } from './SoundVisualizer'
 import { ARTISTS } from './Artists'
@@ -25,33 +25,42 @@ export function ArtistPage() {
   let { name } = useParams()
   
   const currentArtist = ARTISTS.find(artist => artist.name === name)
-  const nextArtist = ARTISTS.find(artist => artist.id === currentArtist.id + 1)
+  const nextArtist = currentArtist.id < ARTISTS.length ? ARTISTS.find(artist => artist.id === currentArtist.id + 1) : ARTISTS[0]
+  const artistImgSrc = `../../${currentArtist.name} copy.png`
 
   return (
     <>
       <div className='main-content artist-info'>
         <div className="item">
-          <img className="item__img_small" src={`../../${currentArtist.name}.png`} alt={`${currentArtist.name} image`} />
-          <span className="item__album">{currentArtist.album}</span>
-          <h2 className="item__artist">{currentArtist.niceName}</h2>
+          {/* <img
+            className="item__img_small"
+            src={artistImgSrc}
+            alt={`${currentArtist.name} image`} /> */}
+          <span className="item__album">{currentArtist.album} </span>
+          <h2 className="item__artist">by {currentArtist.niceName}</h2>
+          <br/>
           <p>{currentArtist.album} was mastered by {currentArtist.masteredBy}</p>
           <p>produced by {currentArtist.producedBy}</p>
           <p>released on {currentArtist.released}</p>
           <p>art by {currentArtist.art}</p>
           <p>kshck{currentArtist.id < 10 ? `00${currentArtist.id}` : currentArtist.id}</p>
-
+          <br/>
           <p>Listen to {currentArtist.song}</p>
           <button onClick={() => {
             setReady(!ready)}
-          }>▶️</button>
-            
+          }>{ready ? 'Pause' : 'Play'}</button>
         </div>
       </div>
       <div className='sound-visualizer'>
-        <SoundVisualizer animate={ready} />
+      <Suspense fallback={
+        <div>
+          <img className="item__img" src={`/public/${artistImgSrc}`} alt="artist image" />
+        </div>}
+      >
+        <SoundVisualizer animate={ready} artistImgSrc={`/public/${artistImgSrc}`} />
+        </Suspense>
+
       </div>
-      
-      
       <RightLink>
         <a href={`/artists/${nextArtist.name}`}>
           <span>&darr;</span> 
