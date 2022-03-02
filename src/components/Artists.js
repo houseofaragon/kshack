@@ -41,9 +41,32 @@ export const ARTISTS = [
   },
 ];
 
+export const LeftMiddle = styled.div`
+  position: absolute;
+  bottom: 35px;
+  right: 0vw;
+  left: -10px;
+  font-family: 'Inter, sans-serif';
+  font-weight: 400;
+  line-height: 1em;
+  letter-spacing: -0.01em;
+  font-size: 12px;
+  transform: rotate(270deg) translate3d(100%, 0, 0);
+  transform-origin: 100% 50%;
+`
+
+const Bar = styled.div`
+  position: absolute;
+  top: ${(props) => (props.vertical ? '349px' : '11.5%')};
+  left: ${(props) => (props.vertical ? '50%' : '0px')};
+  width: ${(props) => (props.vertical ? '2px' : '150px')};
+  height: ${(props) => (props.vertical ? '150px' : '2px')};
+  background: #252525;
+`
+
 export function Artists() {
   return (
-    <div className='grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-40 content-center'>
+    <div className='grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-40 content-center'>
       {ARTISTS.map((artist, index) => {
           return <Artist artist={artist} index={index} key={index} />
       })}
@@ -51,16 +74,15 @@ export function Artists() {
   )
 }
 
-// const navigate = useNavigate();
 function Artist({artist, index}) {
     const imgSrc = `${artist.name} copy.png` 
     const artistPagePath = `/artists/${artist.name}`;
 
     return (
       <Link to={artistPagePath}>
-        <div className="item">
+        <div className="item move">
           <span className="item__album">{artist.album}</span>
-          <h2 className="item__artist">{artist.niceName}</h2>
+          <h2 className="item__artist"><em>by</em> {artist.niceName}</h2>
           <section className="item__canvas">
             <Suspense fallback={
               <div>
@@ -71,7 +93,11 @@ function Artist({artist, index}) {
               </Canvas>
             </Suspense>
           </section>
-          <span className="item__counter">kshck{artist.id < 10 ? `00${artist.id}` : artist.id}</span>
+          <LeftMiddle>
+            <span className="item__counter">kshck{artist.id < 10 ? `00${artist.id}` : artist.id}</span>
+          </LeftMiddle>
+          <Bar />
+          <Bar vertical />
         </div>
       </Link>
     )

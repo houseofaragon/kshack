@@ -12,7 +12,7 @@ import { Artists } from "./components/Artists";
 export default function App(props) {
 	return (
 		<Router>
-			<div class="mx-12">
+			<div className="mx-12">
 				<Header />
 				<Routes>
 					<Route path="/artists" element={<Artists />} />
