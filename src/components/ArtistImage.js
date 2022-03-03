@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader } from 'react-three-fiber'
 import { useMemo, useState, useRef } from 'react'
 import glsl from 'glslify';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'

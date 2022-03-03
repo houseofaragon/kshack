@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { useMemo, Suspense } from 'react'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader } from 'react-three-fiber'
 
 import { ArtistImage } from './ArtistImage'
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'
 
 export const ARTISTS = [
   { id: 1,
@@ -55,15 +55,6 @@ export const LeftMiddle = styled.div`
   transform-origin: 100% 50%;
 `
 
-const Bar = styled.div`
-  position: absolute;
-  top: ${(props) => (props.vertical ? '349px' : '11.5%')};
-  left: ${(props) => (props.vertical ? '50%' : '0px')};
-  width: ${(props) => (props.vertical ? '2px' : '150px')};
-  height: ${(props) => (props.vertical ? '150px' : '2px')};
-  background: #252525;
-`
-
 export function Artists() {
   return (
     <div className='grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mt-40 content-center'>
@@ -73,6 +64,15 @@ export function Artists() {
     </div>
   )
 }
+
+const Bar = styled.div`
+  position: absolute;
+  top: ${(props) => (props.vertical ? '350px' : '11.6%')};
+  left: ${(props) => (props.vertical ? '50%' : '0px')};
+  width: ${(props) => (props.vertical ? '2px' : '150px')};
+  height: ${(props) => (props.vertical ? '150px' : '2px')};
+  background: #252525;
+`
 
 function Artist({artist, index}) {
     const imgSrc = `${artist.name} copy.png` 
@@ -94,7 +94,7 @@ function Artist({artist, index}) {
             </Suspense>
           </section>
           <LeftMiddle>
-            <span className="item__counter">kshck{artist.id < 10 ? `00${artist.id}` : artist.id}</span>
+            <span className="item__counter">KSCHK{artist.id < 10 ? `00${artist.id} ` : artist.id}</span>
           </LeftMiddle>
           <Bar />
           <Bar vertical />
