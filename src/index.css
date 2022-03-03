@@ -167,7 +167,6 @@ div {
   height: 95%;
   top: 5px;
   left: 5px;
-  z-index: 5;
   -webkit-animation: fadein 5s; /* Safari, Chrome and Opera > 12.1 */
   -moz-animation: fadein 5s; /* Firefox < 16 */
    -ms-animation: fadein 5s; /* Internet Explorer */

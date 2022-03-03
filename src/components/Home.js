@@ -63,6 +63,17 @@ export const MainImage = styled.div`
 export function Home() {
   return (
     <>
+     <MainImage>
+        <Suspense fallback={
+          <div>...</div>}
+        >
+          <Canvas onCreated={state => state.gl.setClearColor("white")} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 15 }}
+>
+
+        <Blob position={[0, 0, -20]} scale={[20, 20, 20]}/>
+        </Canvas>
+        </Suspense>
+      </MainImage>
       <BottomLeft>
         <Link to="/artists">Soundcloud</Link>
       </BottomLeft>
@@ -72,16 +83,7 @@ export function Home() {
       <LeftMiddle>An excellent shack.</LeftMiddle>
       <Bar />
       <Bar vertical />
-      <MainImage>
-        <Suspense fallback={
-          <div>...</div>}
-        >
-          <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 100], fov: 45 }}>
 
-        <Blob position={[0, 0, -20]} scale={[20, 20, 20]}/>
-        </Canvas>
-        </Suspense>
-      </MainImage>
     </>
   )
 }
