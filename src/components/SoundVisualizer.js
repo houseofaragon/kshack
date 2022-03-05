@@ -84,6 +84,7 @@ async function createAudio(url) {
 
   // The data array receive the audio frequencies
   const data = new Uint8Array(analyser.frequencyBinCount)
+  console.log('data', data)
   return {
     context,
     source,

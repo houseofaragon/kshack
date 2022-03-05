@@ -4,6 +4,7 @@ import { StaticTrack, SoundVisualizer } from './SoundVisualizer'
 import { ARTISTS } from './Artists'
 import { LeftMiddle } from './Home'
 import styled from 'styled-components'
+import { Spectrogram } from './Spectrogram'
 
 export const RightLink = styled.div`
   position: absolute;
@@ -57,7 +58,7 @@ export function ArtistPage() {
           <img className="item__img" src={`/public/${artistImgSrc}`} alt="artist image" />
         </div>}
       >
-        <SoundVisualizer animate={ready} artistImgSrc={`/public/${artistImgSrc}`} />
+        <Spectrogram animate={ready} artistImgSrc={`/public/${artistImgSrc}`} />
         </Suspense>
 
       </div>
