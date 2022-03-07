@@ -4,51 +4,63 @@ import { Canvas, useFrame, useLoader } from 'react-three-fiber'
 import { useAsset } from 'use-asset'
 import { colorMatrix } from '../util/utils'
 import { fragmentShader, vertexShader}  from '../assets/spectrogramShader'
+import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import glsl from 'glslify';
+import { readConfigFile } from 'typescript'
+
+const frequency_samples = 512;
 
 export function Spectrogram({animate, artistImgSrc}) {
   const texture = useLoader(THREE.TextureLoader, artistImgSrc)
 
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
+    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 75], fov: 25 }}>
       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
-      <Track position-z={0} url="/sleep.wav" animate={animate} />
-      <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
+      <SpectrogramViz position-z={1000} url="/sleep.wav" animate={animate} artistImgSrc={artistImgSrc} />
+      {/* <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
         <planeBufferGeometry receiveShadow attach="geometry" args={[0.8, 0.8]} />
         <shadowMaterial transparent opacity={0.05} />
         <meshBasicMaterial attach="material" map={texture} />
-      </mesh>
+      </mesh> */}
     </Canvas>
   )
 }
 
-function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, ...props }) {
+function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, artistImgSrc, ...props }) {
   const ref = useRef()
   // use-asset is the library that r3f uses internally for useLoader. It caches promises and
   // integrates them with React suspense. You can use it as-is with or without r3f.
-  const { gain, context, update, data } = useAsset(() => createAudio(url), url)
+  const { gain, context, update, data, analyser } = useAsset(() => createAudio(url), url)
 
   // https://calebgannon.com/2021/01/09/spectrogram-with-three-js-and-glsl-shaders/
-
   // https://codepen.io/raybradbury/pen/jOadgpd?editors=1010
-
   // https://github.com/jwtea/three-viewer/blob/20744c53faf7ece7ee1bd19bc593a6322f39d002/components/Shapes/Points.jsx#L7
 
-  const [indices, heights, vertices, lookUpTable] = useMemo(() => {
+  const time_samples = 600; // X resolution
+  const n_vertices = (frequency_samples + 1) * (time_samples + 1);
+  const xsize = 35;  
+  const ysize = 20;
+  const xsegments = time_samples;
+  const ysegments = frequency_samples;
+  const xhalfSize = xsize / 2;
+  const yhalfSize = ysize / 2;
+  const xsegmentSize = xsize / xsegments;
+  const ysegmentSize = ysize / ysegments;
+  // const frequenceData = new Uint8Array(frequency_samples);
+  let heights = [];
+  // generate vertices and color data for a simple grid geometry
+  for (let i = 0; i <= xsegments; i ++ ) {
+    let x = ( i * xsegmentSize ) - xhalfSize;
+
+    for ( let j = 0; j <= ysegments; j ++ ) {
+      let y = (j * ysegmentSize) - yhalfSize;
+      heights.push(0); // no longer flat
+    }
+  }
+
+  const [indices, positions, lookUpTable] = useMemo(() => {
     let indices = [];
-    let heights = [];
-    let vertices = [];
-    // number of time samples
-    let xsize = 35;  
-    let ysize = 20;
-
-    let xsegments = time_samples;
-    let frequency_samples = 512;
-
-    let ysegments = frequency_samples;
-    let xhalfSize = xsize/2;
-    let yhalfSize = ysize / 2;
-    let xsegmentSize = xsize / xsegments;
-    let ysegmentSize = ysize / ysegments;
+    let positions = [];
 
     // generate vertices and color data for a simple grid geometry
     for (let i = 0; i <= xsegments; i ++ ) {
@@ -56,8 +68,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
 
       for ( let j = 0; j <= ysegments; j ++ ) {
         let y = (j * ysegmentSize) - yhalfSize;
-        vertices.push( x, y, 0);
-        heights.push(0);
+        positions.push( x, y, 0);
       }
     }
 
@@ -77,24 +88,32 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
 
     let lookUpTable = [];
     for (let n=0;n<256;n++) {
-      lut.push(new THREE.Vector3((colorMatrix[n][0]*255-49)/206., (colorMatrix[n][1]*255-19)/236., (colorMatrix[n][2]*255-50)/190.));
+      lookUpTable.push(new THREE.Vector3(
+        (colorMatrix[n][2]*255-19)/206., 
+        (colorMatrix[n][2]*255-240)/236.,
+        (colorMatrix[n][2]*255-5)/190.)
+        // 2.55,
+        // 25.0,
+        // 0.9)
+      );
     } 
 
     return [
       indices,
-      new THREE.Uint8BufferAttribute(heights,1),
-      new THREE.Float32BufferAttribute( vertices, 3 ),
+      positions,
       lookUpTable
     ]
   })
 
-  const texture = useMemo(() => useLoader(TextureLoader, src))
+  const texture = useMemo(() => useLoader(TextureLoader, artistImgSrc))
   texture.minFilter = THREE.LinearFilter;
   texture.generateMipmaps = false;
   
   const shaderMaterialData = useMemo(
     () => ({
       uniforms: {
+        uTexture: { value: texture},
+        // displacement: new Uint8Array(heights),
         vLut: {type: "v3v", value: lookUpTable}
       },
       fragmentShader,
@@ -106,7 +125,6 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
   useEffect(() => {
     // Connect the gain node, which plays the audio
     gain.connect(context.destination)
-
       if (!animate && context.state === 'running') {
         context.suspend()
       } else if (context.state === 'suspended') {
@@ -117,27 +135,62 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
   }, [gain, context, animate])
   
   useFrame((state) => {
-    if (animate) {
+    if (animate && ref && ref.current) {
+      // update audio
+      update()
+
+      let start_val = frequency_samples + 1;
+      let end_val = n_vertices - start_val;
+
+      heights = new Uint8Array(heights);
+      heights.copyWithin(0, start_val, n_vertices + 1);
+      heights.set(data, end_val - start_val);
+
+      ref.current.geometry.setAttribute('displacement', new THREE.Uint8BufferAttribute(heights, 1));
+
+      ref.current.geometry.attributes.displacement.needsUpdate = true;
     }
   })
 
   return (
-    <instancedMesh castShadow ref={ref} args={[null, null, data.length]} {...props}>
-       <bufferGeometry>
-        <bufferAttribute
-          attachObject={["attributes", "position"]}
-          array={vertices}
-          itemSize={3}
-        />
-         <bufferAttribute
-          attachObject={["attributes", "displacement"]}
-          array={heights}
-          itemSize={1}
-        />
-      </bufferGeometry>
+    <mesh ref={ref} rotation={[-Math.PI/4, 0, Math.PI/6]} position={[0, 0, 0]}>
+    {/* <mesh ref={ref} rotation={[-Math.PI/4 , -Math.PI, -Math.PI/6]} position={[5, 15, 0]}> */}
+        <bufferGeometry attach="geometry" onUpdate={self => {
+          self.computeVertexNormals()
+        }}>
+          <bufferAttribute
+            array={new Uint32Array(indices)}
+            attach="index"
+            count={indices.length}
+            itemSize={1}
+          />
+          <bufferAttribute
+            attachObject={["attributes", "position"]}
+            count={positions.length / 3}
+            array={new Float32Array(positions)}
+            itemSize={3}
+          />
+          {/* <bufferAttribute
+            attachObject={["attributes", "color"]}
+            count={height.length / 3}
+            array={new Float32Array(heights)}
+            itemSize={1}
+          /> */}
+          <bufferAttribute
+            attachObject={["attributes", "displacement"]}
+            count={heights.length}
+            array={new Uint8Array(heights)}
+            itemSize={1}
+          />
+        </bufferGeometry>
       {/* <planeGeometry args={[width, height]} /> */}
-      <meshBasicMaterial attach="material" map={texture} />
-    </instancedMesh>
+      <shaderMaterial attach="material" args={[{
+        uniforms: shaderMaterialData.uniforms,
+        uniformsNeedUpdate: true,
+        vertexShader: glsl(shaderMaterialData.vertexShader),
+        fragmentShader: glsl(shaderMaterialData.fragmentShader),
+      }]} />
+    </mesh>
   )
 }
 
@@ -163,6 +216,7 @@ function Track({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = ne
   useFrame((state) => {
     if (animate) {
       let avg = update()
+      // console.log('avg', avg)
       // Distribute the instanced planes according to the frequency daza
       for (let i = 0; i < data.length; i++) {
         obj.position.set(i * width * space - (data.length * width * space) / 2, data[i] / y * 2, 0)
@@ -199,24 +253,26 @@ async function createAudio(url) {
   // Create gain node and an analyser
   const gain = context.createGain()
   const analyser = context.createAnalyser()
-  analyser.fftSize = 64
+  analyser.fftSize = 4 * frequency_samples;  
   source.connect(analyser)
   analyser.connect(gain)
 
-
   // The data array receive the audio frequencies
   const data = new Uint8Array(analyser.frequencyBinCount)
-  console.log('data', data)
+
   return {
     context,
     source,
     gain,
     data,
+    analyser,
     // This function gets called every frame per audio source
     update: () => {
       analyser.getByteFrequencyData(data)
       // Calculate a frequency average
-      return (data.avg = data.reduce((prev, cur) => prev + cur / data.length, 0))
+      // console.log('data', data)
+      return (data.avg = data.reduce((prev, cur) => (prev + cur) / data.length , 0))
+      // return data
     },
   }
 }

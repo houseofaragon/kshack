@@ -47,7 +47,8 @@ export function ArtistPage() {
           <p>kshck{currentArtist.id < 10 ? `00${currentArtist.id}` : currentArtist.id}</p>
           <br/>
           <p>Listen to {currentArtist.song}</p>
-          <button onClick={() => {
+          <button onClick={(e) => {
+            e.preventDefault()
             setReady(!ready)}
           }>{ready ? 'Pause' : 'Play'}</button>
         </div>
