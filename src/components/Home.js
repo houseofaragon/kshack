@@ -1,45 +1,22 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import { Canvas, useLoader } from 'react-three-fiber'
+import * as THREE from 'three'
+import { Suspense } from 'react'
+import { Blob } from './Blob'
 
-const TopLeft = styled.div`
-  position: absolute;
-  top: 6vw;
-  left: 6vw;
-  font-family: 'Inter, sans-serif';
-  font-weight: 400;
-  line-height: 1em;
-  letter-spacing: -0.01em;
-  font-size: 12px;
-  display: flex;
-  flex-direction: row;
-`
-const Logo = styled.div`
-    height: 60px;
-    width: 60px;
-    margin-right: 1vw;
-    background-image: url("/kshack-logo.jpg");
-`
-
-const Menu = styled.div`
-    display: flex;
-    flex-direction: row;
-`
 const BottomLeft = styled.div`
   position: absolute;
   bottom: 6vw;
   left: 6vw;
-  font-family: 'Playfair Display', sans-serif;
   font-size: 12px;
-  line-height: 0.9em;
 `
 
 const BottomRight = styled.div`
   position: absolute;
   bottom: 6vw;
   right: 6vw;
-  font-family: 'Inter, sans-serif';
   font-weight: 400;
-  line-height: 1em;
   letter-spacing: -0.01em;
   font-size: 12px;
   text-align: right;
@@ -49,16 +26,13 @@ export const LeftMiddle = styled.div`
   position: absolute;
   bottom: 50%;
   right: 6vw;
-  font-family: 'Inter, sans-serif';
   font-weight: 400;
-  line-height: 1em;
   letter-spacing: -0.01em;
   font-size: 12px;
   transform: rotate(90deg) translate3d(50%, 0, 0);
   transform-origin: 100% 50%;
 `
-
-const Bar = styled.div`
+export const Bar = styled.div`
   position: absolute;
   top: ${(props) => (props.vertical ? '0px' : '50%')};
   left: ${(props) => (props.vertical ? '50%' : '0px')};
@@ -67,33 +41,39 @@ const Bar = styled.div`
   background: #252525;
 `
 
-const Hamburger = styled.div`
+export const MainImage = styled.div`
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 6vw;
-  right: 6vw;
-  & > div {
-    position: relative;
-    width: 24px;
-    height: 2px;
-    background: #252525;
-    margin-bottom: 6px;
-  }
+  width: 100vw;
+  height: 100vh;
 `
+// function MainImage() {
+//   const texture = useLoader(THREE.TextureLoader, '../../504-aquatic copy.png')
+
+//   return (
+//     <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
+//       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
+//       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
+//         <planeBufferGeometry receiveShadow attach="geometry" args={[0.5, 0.5]} />
+//         <meshBasicMaterial attach="material" map={texture} />
+//       </mesh>
+//     </Canvas>
+//   )
+// }
 
 export function Home() {
   return (
     <>
-      <TopLeft>
-        {/* <i>K</i>
-        <br />
-        Shack */}
-        <Logo />
-        <Menu>
-            <Link to="/artists">Artists</Link>
-        </Menu>
-      </TopLeft>
+     <MainImage>
+        <Suspense fallback={
+          <div>...</div>}
+        >
+          <Canvas onCreated={state => state.gl.setClearColor("white")} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 15 }}
+>
+
+        <Blob position={[0, 0, -20]} scale={[20, 20, 20]}/>
+        </Canvas>
+        </Suspense>
+      </MainImage>
       <BottomLeft>
         <Link to="/artists">Soundcloud</Link>
       </BottomLeft>
@@ -103,6 +83,7 @@ export function Home() {
       <LeftMiddle>An excellent shack.</LeftMiddle>
       <Bar />
       <Bar vertical />
+
     </>
   )
 }
