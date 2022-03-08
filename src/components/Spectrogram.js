@@ -9,24 +9,23 @@ import glsl from 'glslify';
 import { readConfigFile } from 'typescript'
 
 const frequency_samples = 512;
+const frequenceData = new Uint8Array(frequency_samples);
 
-export function Spectrogram({animate, artistImgSrc}) {
-  const texture = useLoader(THREE.TextureLoader, artistImgSrc)
-
+export function Spectrogram({animate, artistImgSrc, random = true}) {
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 75], fov: 25 }}>
+    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 100], fov: 25 }}>
       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
-      <SpectrogramViz position-z={1000} url="/sleep.wav" animate={animate} artistImgSrc={artistImgSrc} />
       {/* <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
         <planeBufferGeometry receiveShadow attach="geometry" args={[0.8, 0.8]} />
         <shadowMaterial transparent opacity={0.05} />
-        <meshBasicMaterial attach="material" map={texture} />
+        <meshBasicMaterial attach="material" color="hotpink" map={texture} />
       </mesh> */}
+      <SpectrogramViz position-z={1000} url="/sleep.wav" animate={animate} artistImgSrc={artistImgSrc} random={random}/>
     </Canvas>
   )
 }
 
-function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, artistImgSrc, ...props }) {
+function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, artistImgSrc, random = false, ...props }) {
   const ref = useRef()
   // use-asset is the library that r3f uses internally for useLoader. It caches promises and
   // integrates them with React suspense. You can use it as-is with or without r3f.
@@ -46,7 +45,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
   const yhalfSize = ysize / 2;
   const xsegmentSize = xsize / xsegments;
   const ysegmentSize = ysize / ysegments;
-  // const frequenceData = new Uint8Array(frequency_samples);
+
   let heights = [];
   // generate vertices and color data for a simple grid geometry
   for (let i = 0; i <= xsegments; i ++ ) {
@@ -54,7 +53,8 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
 
     for ( let j = 0; j <= ysegments; j ++ ) {
       let y = (j * ysegmentSize) - yhalfSize;
-      heights.push(0); // no longer flat
+      //let value = random ? Math.random()*255 : 0
+      heights.push(0)
     }
   }
 
@@ -89,9 +89,9 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
     let lookUpTable = [];
     for (let n=0;n<256;n++) {
       lookUpTable.push(new THREE.Vector3(
-        (colorMatrix[n][2]*255-19)/206., 
-        (colorMatrix[n][2]*255-240)/236.,
-        (colorMatrix[n][2]*255-5)/190.)
+        (colorMatrix[n][0]*255-1)/206., 
+        (colorMatrix[n][0]*255-4)/236.,
+        (colorMatrix[n][0]*255-5)/190.)
         // 2.55,
         // 25.0,
         // 0.9)
@@ -106,15 +106,19 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
   })
 
   const texture = useMemo(() => useLoader(TextureLoader, artistImgSrc))
+  // texture.minFilter = THREE.LinearFilter;
+  // texture.generateMipmaps = false;
   texture.minFilter = THREE.LinearFilter;
   texture.generateMipmaps = false;
-  
+
   const shaderMaterialData = useMemo(
     () => ({
-      uniforms: {
-        uTexture: { value: texture},
-        // displacement: new Uint8Array(heights),
-        vLut: {type: "v3v", value: lookUpTable}
+        uniforms: {
+          uTexture: { value: texture},
+          uTime: { value: 0 },
+          uProg: { value: 0 },
+          uIndex: { value: 3 },
+          vLut: {type: "v3v", value: lookUpTable}
       },
       fragmentShader,
       vertexShader
@@ -137,14 +141,21 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
   useFrame((state) => {
     if (animate && ref && ref.current) {
       // update audio
-      update()
+      let heightsValue = []
+      if (random) {
+        crypto.getRandomValues(frequenceData);
+        heightsValue = frequenceData
+      } else {
+        update()
+        heightsValue = data
+      }
 
       let start_val = frequency_samples + 1;
       let end_val = n_vertices - start_val;
 
       heights = new Uint8Array(heights);
       heights.copyWithin(0, start_val, n_vertices + 1);
-      heights.set(data, end_val - start_val);
+      heights.set(heightsValue, end_val - start_val);
 
       ref.current.geometry.setAttribute('displacement', new THREE.Uint8BufferAttribute(heights, 1));
 
@@ -170,12 +181,6 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
             array={new Float32Array(positions)}
             itemSize={3}
           />
-          {/* <bufferAttribute
-            attachObject={["attributes", "color"]}
-            count={height.length / 3}
-            array={new Float32Array(heights)}
-            itemSize={1}
-          /> */}
           <bufferAttribute
             attachObject={["attributes", "displacement"]}
             count={heights.length}
@@ -275,22 +280,4 @@ async function createAudio(url) {
       // return data
     },
   }
-}
-
-export function StaticTrack({ y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D() }) {
-  const ref = useRef()
-
-  for (let i = 0; i < 40; i++) {
-    obj.position.set(i * width * space - (40 * width * space) / 2, 0, 0)
-  }
-  // Set the hue according to the frequency average
-  // ref.current.material.color.setHSL(500, 0.75, 0.75)
-  // ref.current.instanceMatrix.needsUpdate = true
-
-  return (
-    <instancedMesh castShadow ref={ref} args={[null, null, 40]}>
-      <sphereBufferGeometry attach="geometry" args={[0.01, 32, 64]} />
-      <meshBasicMaterial toneMapped={false} />
-    </instancedMesh>
-  )
 }

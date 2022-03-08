@@ -59,7 +59,7 @@ export function ArtistPage() {
           <img className="item__img" src={`/public/${artistImgSrc}`} alt="artist image" />
         </div>}
       >
-        <Spectrogram animate={ready} artistImgSrc={`/public/${artistImgSrc}`} />
+        <Spectrogram animate={ready} artistImgSrc={`/public/${artistImgSrc}`} random={false} />
         </Suspense>
 
       </div>

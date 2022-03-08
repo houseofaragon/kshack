@@ -45,6 +45,9 @@ export const MainImage = styled.div`
   position: absolute;
   width: 100vw;
   height: 100vh;
+  margin-top: -70px;
+  margin-left: -50px;
+  z-index: -1;
 `
 // function MainImage() {
 //   const texture = useLoader(THREE.TextureLoader, '../../504-aquatic copy.png')
@@ -67,9 +70,8 @@ export function Home() {
         <Suspense fallback={
           <div>...</div>}
         >
-          <Canvas onCreated={state => state.gl.setClearColor("white")} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 15 }}
->
-
+          <Canvas onCreated={state => state.gl.setClearColor( new THREE.Color( 0xffffff ))} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 10 }}
+      >
         <Blob position={[0, 0, -20]} scale={[20, 20, 20]}/>
         </Canvas>
         </Suspense>
@@ -83,7 +85,6 @@ export function Home() {
       <LeftMiddle>An excellent shack.</LeftMiddle>
       <Bar />
       <Bar vertical />
-
     </>
   )
 }

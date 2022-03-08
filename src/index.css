@@ -21,6 +21,8 @@ body{
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  /* background-color: #f5f3f3; */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
