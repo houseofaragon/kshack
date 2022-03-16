@@ -12,7 +12,7 @@ const BottomLeft = styled.div`
   font-size: 12px;
 `
 
-const BottomRight = styled.div`
+export const BottomRight = styled.div`
   position: absolute;
   bottom: 6vw;
   right: 6vw;
@@ -22,7 +22,7 @@ const BottomRight = styled.div`
   text-align: right;
 `
 
-export const LeftMiddle = styled.div`
+export const RightMiddle = styled.div`
   position: absolute;
   bottom: 50%;
   right: 6vw;
@@ -30,6 +30,15 @@ export const LeftMiddle = styled.div`
   letter-spacing: -0.01em;
   font-size: 12px;
   transform: rotate(90deg) translate3d(50%, 0, 0);
+  transform-origin: 100% 50%;
+`
+export const LeftMiddle = styled.div`
+  position: absolute;
+  bottom: 48.3%;
+  left: 4.8vw;
+  letter-spacing: -0.01em;
+  font-size: 17px;
+  transform: rotate(0deg) translate3d(50%, 0, 0);
   transform-origin: 100% 50%;
 `
 export const Bar = styled.div`
@@ -49,32 +58,14 @@ export const MainImage = styled.div`
   margin-left: -50px;
   z-index: -1;
 `
-// function MainImage() {
-//   const texture = useLoader(THREE.TextureLoader, '../../504-aquatic copy.png')
-
-//   return (
-//     <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 1], fov: 25 }}>
-//       <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
-//       <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.025, 0]}>
-//         <planeBufferGeometry receiveShadow attach="geometry" args={[0.5, 0.5]} />
-//         <meshBasicMaterial attach="material" map={texture} />
-//       </mesh>
-//     </Canvas>
-//   )
-// }
-
 export function Home() {
   return (
     <>
      <MainImage>
-        <Suspense fallback={
-          <div>...</div>}
-        >
-          <Canvas onCreated={state => state.gl.setClearColor( new THREE.Color( 0xffffff ))} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 10 }}
-      >
+      <Canvas onCreated={state => state.gl.setClearColor( new THREE.Color( 0xffffff ))} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 10 }}
+            >
         <Blob position={[0, 0, -20]} scale={[20, 20, 20]}/>
         </Canvas>
-        </Suspense>
       </MainImage>
       <BottomLeft>
         <Link to="/artists">Soundcloud</Link>
@@ -82,7 +73,8 @@ export function Home() {
       <BottomRight>
         Art by Hatnim Lee
       </BottomRight>
-      <LeftMiddle>An excellent shack.</LeftMiddle>
+      <RightMiddle>An excellent shack.</RightMiddle>
+      <LeftMiddle>KSHACK</LeftMiddle>
       <Bar />
       <Bar vertical />
     </>

@@ -14,7 +14,7 @@ import { fragmentShader, vertexShader}  from '../assets/shader.js'
  https://codesandbox.io/s/02-make-some-noise-forked-inj5q?file=/src/gl/index.js
  https://codesandbox.io/s/03-adding-the-texture-forked-h6sup?file=/src/gl/index.js
 */
-export function ArtistImage({src, index}) {
+export const ArtistImage = ({src, index}) => {
   const imageRef = useRef()
   const [hover, setHover] = useState(false);
 
