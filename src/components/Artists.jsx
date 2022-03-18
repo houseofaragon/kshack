@@ -6,45 +6,6 @@ import { ArtistImage } from '@/components/ArtistImage'
 import Link
   from 'next/link'
 
-export const ARTISTS = [
-  {
-    id: 1,
-    name: "ronnie-makebelieve",
-    niceName: "Ronnie Makebelieve",
-    album: "Muon",
-    song: "synth.mp3",
-    released: "October 1, 2021",
-    art: "Selwa Abd",
-    masteredBy: "Stephan Mathieu",
-    producedBy: "Mike Sheffield and Jeremy Krinsley",
-    bandcampLink: "https://kshack.bandcamp.com/album/muon-kschk001"
-  },
-  {
-    id: 2,
-    name: "sleep-300",
-    niceName: "Sleep 300",
-    album: "Reduction",
-    song: "snare.mp3",
-    released: "October 1, 2021",
-    art: "Selwa Abd",
-    masteredBy: "Stephan Mathieu",
-    producedBy: "Mike Sheffield and Jeremy Krinsley",
-    bandcampLink: "https://kshack.bandcamp.com/album/muon-kschk001"
-  },
-  {
-    id: 3,
-    name: "504-aquatic",
-    niceName: "504 Aquatic",
-    album: "LoE3",
-    song: "drums.mp3",
-    released: "October 1, 2021",
-    art: "Selwa Abd",
-    masteredBy: "Stephan Mathieu",
-    producedBy: "Mike Sheffield and Jeremy Krinsley",
-    bandcampLink: "https://kshack.bandcamp.com/album/muon-kschk001"
-  },
-];
-
 export const Bar = styled.div`
   position: absolute;
   top: ${(props) => (props.vertical ? '350px' : '11.6%')};
@@ -67,18 +28,20 @@ export const LeftMiddle = styled.div`
   transform-origin: 100% 50%;
 `
 
-export function Artists() {
+export function Artists({ artists }) {
   return (
     <div className='grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:mt-20 mt-10 content-center'>
-      {ARTISTS.map((artist, index) => {
-        const imgSrc = `/${artist.name} copy.png`
-        const artistPagePath = `/artists/${artist.name}`;
+      {artists.map((artist, index) => {
+        const { niceName, albumName, albumImage, slug } = artist.attributes
+        const imgSrc = `http://localhost:1337${albumImage.data.attributes.url}`
+
+        const artistPagePath = `/artists/${slug}`;
 
         return (
-          <Link href={artistPagePath}>
-            <div className="item move">
-              <span className="item__album">{artist.album}</span>
-              <h2 className="item__artist"><em>by</em> {artist.niceName}</h2>
+          <Link href={artistPagePath} key={index}>
+            <div className="item">
+              <span className="item__album">{albumName}</span>
+              <h2 className="item__artist"><em>by</em> {niceName}</h2>
               <section className="item__canvas">
                 <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
                   <Suspense fallback={null}>

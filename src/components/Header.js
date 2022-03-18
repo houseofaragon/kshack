@@ -3,10 +3,13 @@ import Link from 'next/link'
 
 export function Header() {
   return (
-    <div className="header">
-      <div className='menu'>
+    <div className="header menu">
+      <div>
         <Link href="/"><div className='logo' /></Link>
-        <Link href="/artists">Artists</Link>
+      </div>
+      <div>
+        <span className="pr-5"><Link href="/artists">Artists</Link></span>
+        <Link href="/about">About</Link>
       </div>
     </div>
   )

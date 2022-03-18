@@ -1,25 +1,22 @@
 import * as THREE from 'three'
 import { useEffect, useRef, useMemo } from 'react'
-import { Canvas, useFrame, useLoader } from 'react-three-fiber'
+import { useFrame, useLoader } from '@react-three/fiber'
 import { useAsset } from 'use-asset'
-import { colorMatrix } from '../util/utils'
-import { fragmentShader, vertexShader}  from '@/lib/spectrogramShader'
+import { colorMatrix } from '@/utils/utils'
+import { fragmentShader, vertexShader}  from '@/utils/spectrogramShader'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import glsl from 'glslify';
 
 const frequency_samples = 512;
 const frequenceData = new Uint8Array(frequency_samples);
 
-export function Spectrogram({animate, artistImgSrc, random = true}) {
+export function Spectrogram({animate, song, songBuffer, random = true}) {
   return (
-    <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 100], fov: 25 }}>
-      <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
-      <SpectrogramViz url="/sleep.wav" animate={animate} artistImgSrc={artistImgSrc} random={random}/>
-    </Canvas>
+    <SpectrogramViz url={song} animate={animate} random={random}/>
   )
 }
 
-function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, artistImgSrc, random = false, ...props }) {
+function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, random = false, ...props }) {
   const ref = useRef()
   const { gain, context, update, data, analyser } = useAsset(() => createAudio(url), url)
 
@@ -97,16 +94,16 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
     ]
   })
 
-  const texture = useMemo(() => useLoader(TextureLoader, artistImgSrc))
+  //const texture = useMemo(() => useLoader(TextureLoader, artistImgSrc))
   // texture.minFilter = THREE.LinearFilter;
   // texture.generateMipmaps = false;
-  texture.minFilter = THREE.LinearFilter;
-  texture.generateMipmaps = false;
+  // texture.minFilter = THREE.LinearFilter;
+  // texture.generateMipmaps = false;
 
   const shaderMaterialData = useMemo(
     () => ({
         uniforms: {
-          uTexture: { value: texture},
+          // uTexture: { value: texture},
           uTime: { value: 0 },
           uProg: { value: 0 },
           uIndex: { value: 3 },

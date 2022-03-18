@@ -1,8 +1,8 @@
 {
-  "name": "react-three-next",
-  "version": "2.0.0",
+  "name": "kshack",
+  "version": "0.0.0",
   "authors": [
-    "Renaud ROHLINGER <https://twitter.com/onirenaud>"
+    "Karen C. Aragon"
   ],
   "license": "MIT",
   "private": true,
@@ -20,11 +20,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.54.1",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@react-three/drei": "^8.16.5",
     "@react-three/fiber": "^7.0.26",
     "babel-plugin-glsl": "^1.0.0",
     "glsl-random": "^0.0.5",
+    "graphql-tag": "^2.12.6",
     "gsap": "^3.9.1",
     "next": "^12.1.0",
     "react": "^17.0.2",

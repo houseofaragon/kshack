@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { ARTISTS } from './Artists'
 import styled from 'styled-components'
 import { Spectrogram } from './Spectrogram'
+import { Canvas } from '@react-three/fiber'
 
 export const RightLink = styled.div`
   position: absolute;
@@ -53,64 +54,62 @@ export const BottomRight = styled.div`
   font-size: 12px;
   text-align: right;
 `
-export function ArtistPage() {
+export function ArtistPage({artistData}) {
   const animate = useRef(false);
-
   const [ready, setReady] = useState(false)
-  const router = useRouter()
   
-  const currentArtist = ARTISTS.find(artist => `/${artist.name}` === router.pathname)
-  const nextArtist = currentArtist.id < ARTISTS.length ? ARTISTS.find(artist => artist.id === currentArtist.id + 1) : ARTISTS[0]
-  const artistImgSrc = `../../${currentArtist.name} copy.png`
+  const { id, albumName, featuredSongName, niceName, nextArtistSlug, nextArtistLinkText } = artistData
 
   return (
     <>
-      <div className="main-content bg-green">
+      <div className="main-content">
           <div className="item__album">
-            {currentArtist.album}
+            {albumName}
             <div>
-              <p>Listen to {currentArtist.song}</p>
+              <p>Listen to {featuredSongName}</p>
               <button onClick={(e) => {
               e.preventDefault()
               setReady(!ready)}
               }>{ready ? '||' : '▶'}</button>
             </div>
           </div>
-          <h2 className="item__artist"><em>by</em> {currentArtist.niceName}</h2>
+          <h2 className="item__artist"><em>by</em> {niceName}</h2>
           <LeftMiddle>
-            <span className="">KSCHK{currentArtist.id < 10 ? `00${currentArtist.id} ` : currentArtist.id}</span>
+            <span className="">KSCHK{id < 10 ? `00${id} ` : id}</span>
           </LeftMiddle>
           <Bar />
           <Bar vertical />
         <BottomLeft>
-          <a href={`/artists/${nextArtist.name}`}>
+          <a href={``}>
             Bandcamp
           </a>
-          <a href={`/artists/${nextArtist.name}`}>
+          <a href={``}>
             Soundcloud
           </a>
         </BottomLeft>
         <RightLink>
-          <a href={`/artists/${nextArtist.name}`}>
+          <a href={`/artists/${nextArtistSlug}`}>
             <span className="mr-3">&darr;</span> 
-            <span>{nextArtist.album} by {nextArtist.niceName} </span>
+            <span>{nextArtistLinkText}</span>
           </a>
         </RightLink>
         <BottomRight>
-          <p> {currentArtist.album} was produced by {currentArtist.producedBy}.</p>
-          <p> Mastered by {currentArtist.masteredBy}. Album Art by {currentArtist.art}.</p> 
-          <p>Released on {currentArtist.released}.</p>
-          <p>Album Art by {currentArtist.art}.</p>
+          <p> {artistData.albumName} was produced by {artistData.producer}.</p>
+          <p> Mastered by {artistData.masteredBy}. Album Art by {artistData.coverArtist}.</p> 
+          <p>Released on {artistData.releaseDate}.</p>
         </BottomRight>
       </div>
       <div className='sound-visualizer'>
-        <Suspense fallback={
-          <div>
-            <img className="item__img" src={`/public/${artistImgSrc}`} alt="artist image" />
-          </div>}
-        >
-          <Spectrogram animate={ready} artistImgSrc={`/public/${artistImgSrc}`} random={false} />
-        </Suspense>
+        <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 100], fov: 25 }}>
+          <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
+          <Suspense fallback={null}
+          >
+            <Spectrogram
+              animate={ready}
+              song={artistData.featuredSongUrl}
+              random={false} />
+          </Suspense>
+        </Canvas>
       </div>
     </>
   )
