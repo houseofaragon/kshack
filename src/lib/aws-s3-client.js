@@ -3,8 +3,8 @@ import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
 const REGION = 'us-east-1'
 
 const credentials = {
-  accessKeyId: 'AKIAVN2UZNQN3LQXONUJ',
-  secretAccessKey: '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',
+  accessKeyId: '',
+  secretAccessKey: '',
 };
 export const s3Client = new S3Client({
   region: REGION,
