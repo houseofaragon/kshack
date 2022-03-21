@@ -3,6 +3,9 @@
   "rules": {
     "import/prefer-default-export": "off",
     "no-console": "warn",
-    "no-var": "error"
+    "no-var": "error",
+    "react/no-unescaped-entities": "off",
+    "react-hooks/exhaustive-deps": "off",
+    "tailwind/class-order": "off"
   }
 }

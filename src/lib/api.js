@@ -1,14 +1,16 @@
 async function fetchApi(query) {
   const response = await fetch(
-    `${process.env.GRAPHQL_URL}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      query
-    })
-  })
+    `${process.env.GRAPHQL_URL}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query
+      })
+    }
+  )
 
   const data = await response.json()
 

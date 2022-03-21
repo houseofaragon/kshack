@@ -3,8 +3,7 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 
 import { ArtistImage } from '@/components/ArtistImage'
-import Link
-  from 'next/link'
+import Link from 'next/link'
 
 export const Bar = styled.div`
   position: absolute;
@@ -30,7 +29,7 @@ export const LeftMiddle = styled.div`
 
 export function Artists({ artists }) {
   return (
-    <div className='grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:mt-20 mt-10 content-center'>
+    <div className='grid gap-10 grid-cols-1 grid-cols-2 md:mt-20 lg:grid-cols-3 mt-10 content-center'>
       {artists.map((artist, index) => {
         const { niceName, albumName, albumImage, slug } = artist.attributes
         const imgSrc = `http://localhost:1337${albumImage.data.attributes.url}`
@@ -38,7 +37,7 @@ export function Artists({ artists }) {
         const artistPagePath = `/artists/${slug}`;
 
         return (
-          <Link href={artistPagePath} key={index}>
+          <Link href={artistPagePath} key={index} passHref>
             <div className="item">
               <span className="item__album">{albumName}</span>
               <h2 className="item__artist"><em>by</em> {niceName}</h2>

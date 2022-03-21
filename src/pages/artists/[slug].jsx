@@ -1,7 +1,6 @@
 import { ArtistPage } from "@/components/ArtistPage";
 import { Layout } from "@/components/Layout";
 import { getAllArtistSlugs, getArtistBySlug } from "@/lib/api";
-import { CompressedPixelFormat } from "three";
 
 export default function Index({artistData}) {
   return (
@@ -24,14 +23,12 @@ export async function getStaticProps({params}) {
   }
 
   const data = response[0]
-  const artistData = {
-    id: data.id,
-    ...data.attributes
-  }
-
   return {
     props: {
-      artistData: artistData || {},
+      artistData: {
+        id: data.id,
+        ...data.attributes
+      }
     }
   }
 }
@@ -43,6 +40,6 @@ export async function getStaticPaths() {
   return {
     paths,
     // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
-    fallback: true,
+    fallback: false,
   }
 }

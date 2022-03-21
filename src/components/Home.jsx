@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Canvas } from '@react-three/fiber'
-import { Blob } from './Blob'
+import { Blob } from './Boxes'
 import * as THREE from 'three'
 
 export function Home() {

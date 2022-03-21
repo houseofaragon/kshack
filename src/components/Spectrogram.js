@@ -48,7 +48,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
     }
 
     return [heights]
-  });
+  }, [xhalfSize, xsegmentSize, xsegments, yhalfSize, ysegmentSize, ysegments]);
 
   const [indices, positions, lookUpTable] = useMemo(() => {
     let indices = [];
@@ -92,18 +92,11 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
       positions,
       lookUpTable
     ]
-  })
-
-  //const texture = useMemo(() => useLoader(TextureLoader, artistImgSrc))
-  // texture.minFilter = THREE.LinearFilter;
-  // texture.generateMipmaps = false;
-  // texture.minFilter = THREE.LinearFilter;
-  // texture.generateMipmaps = false;
+  }, [xhalfSize, xsegmentSize, xsegments, yhalfSize, ysegmentSize, ysegments])
 
   const shaderMaterialData = useMemo(
     () => ({
         uniforms: {
-          // uTexture: { value: texture},
           uTime: { value: 0 },
           uProg: { value: 0 },
           uIndex: { value: 3 },
@@ -112,7 +105,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
       fragmentShader,
       vertexShader
     }),
-    []
+    [lookUpTable]
   )
 
   useEffect(() => {

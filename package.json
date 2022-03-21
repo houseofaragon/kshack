@@ -15,6 +15,7 @@
     "prettier": "prettier -l \"./src/**/*.{js,jsx,md}\"",
     "dev": "next dev",
     "build": "next build",
+    "build-export": "next build && next export",
     "export": "EXPORT=true next build && EXPORT=true next export",
     "analyze": "ANALYZE=true next build",
     "start": "next start"

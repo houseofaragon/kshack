@@ -4,7 +4,7 @@ export default function About() {
   return (
     <Layout>
       <div className="m-auto">
-        Hi, we're KShack. You can reach us at [email]
+        <p>Hi, we're KShack. You can reach us at [email]</p>
       </div>
       <div className='bottom-left'>
         Put something funny here?
