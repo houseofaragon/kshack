@@ -147,7 +147,6 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
 
   return (
     <mesh ref={ref} rotation={[15,0,15]} position={[0, 3, 0]}>
-    {/* <mesh ref={ref} rotation={[-Math.PI/4 , -Math.PI, -Math.PI/6]} position={[5, 15, 0]}> */}
         <bufferGeometry attach="geometry" onUpdate={self => {
           self.computeVertexNormals()
         }}>
@@ -170,7 +169,6 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
             itemSize={1}
           />
         </bufferGeometry>
-      {/* <planeGeometry args={[width, height]} /> */}
       <shaderMaterial attach="material" args={[{
         uniforms: shaderMaterialData.uniforms,
         uniformsNeedUpdate: true,
@@ -182,38 +180,42 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
 }
 
 async function createAudio(url) {
-  // Fetch audio data and create a buffer source
-  const res = await fetch(url)
-  const buffer = await res.arrayBuffer()
-  const context = new (window.AudioContext || window.webkitAudioContext)()
-  const source = context.createBufferSource()
-  source.buffer = await new Promise((res) => context.decodeAudioData(buffer, res))
-  source.loop = true
-  // This is why it doesn't run in Safari 🍏🐛. Start has to be called in an onClick event - need to load the async data first
-  source.start(0)
+  try {
+    // Fetch audio data and create a buffer source
+    const res = await fetch('https://s3.amazonaws.com/fifteen.pm/aef315/12asdf4f2')
+    const buffer = await res.arrayBuffer()
+    const context = new (window.AudioContext || window.webkitAudioContext)()
+    const source = context.createBufferSource()
+    source.buffer = await new Promise((res) => context.decodeAudioData(buffer, res))
+    source.loop = true
+    source.start(0)
 
-  // Create gain node and an analyser
-  const gain = context.createGain()
-  const analyser = context.createAnalyser()
-  analyser.fftSize = 4 * frequency_samples;  
-  source.connect(analyser)
-  analyser.connect(gain)
+    // Create gain node and an analyser
+    const gain = context.createGain()
+    const analyser = context.createAnalyser()
+    analyser.fftSize = 4 * frequency_samples;  
+    source.connect(analyser)
+    analyser.connect(gain)
 
-  // The data array receive the audio frequencies
-  const data = new Uint8Array(analyser.frequencyBinCount)
+    // The data array receive the audio frequencies
+    const data = new Uint8Array(analyser.frequencyBinCount)
 
-  return {
-    context,
-    source,
-    gain,
-    data,
-    analyser,
-    // This function gets called every frame per audio source
-    update: () => {
-      analyser.getByteFrequencyData(data)
-      // Calculate a frequency average
-      return (data.avg = data.reduce((prev, cur) => (prev + cur) / data.length , 0))
-      // return data
-    },
+    return {
+      context,
+      source,
+      gain,
+      data,
+      analyser,
+      // This function gets called every frame per audio source
+      update: () => {
+        analyser.getByteFrequencyData(data)
+        // Calculate a frequency average
+        return (data.avg = data.reduce((prev, cur) => (prev + cur) / data.length , 0))
+        // return data
+      },
+    }
+  } catch (error) {
+    console.log(error)
+    throw new Error(error)
   }
 }

@@ -1,70 +1,31 @@
 import { Suspense, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
-import { ARTISTS } from './Artists'
-import styled from 'styled-components'
 import { Spectrogram } from './Spectrogram'
 import { Canvas } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei'
 
-export const RightLink = styled.div`
-  position: absolute;
-  bottom: 50%;
-  right: 6vw;
-  font-family: 'Inter, sans-serif';
-  font-weight: 400;
-  line-height: 1em;
-  letter-spacing: -0.01em;
-  font-size: 12px;
-  transform: rotate(-90deg) translate3d(50%, 0, 0);
-  transform-origin: 100% 50%;
-`
-export const LeftMiddle = styled.div`
-  position: absolute;
-  bottom: 58%;
-  left: 42.7%;
-  background-color: white;
-  padding: 5px;
-  font-weight: 400;
-  letter-spacing: 0.2em;
-  font-size: 14px;
-  transform: rotate(-90deg) translate3d(50%, 0, 0);
-  transform-origin: 100% 50%;
-  z-index: -1;
-`
-const BottomLeft = styled.div`
-  position: absolute;
-  bottom: 6vw;
-  left: 23vw;
-  font-size: 12px;
-`
-export const Bar = styled.div`
-  z-index: -1;
-  position: absolute;
-  top: ${(props) => (props.vertical ? '40%' : '29%')};
-  left: ${(props) => (props.vertical ? '50%' : '0px')};
-  width: ${(props) => (props.vertical ? '2px' : '150px')};
-  height: ${(props) => (props.vertical ? '150px' : '2px')};
-  background: #252525;
-`
-export const BottomRight = styled.div`
-  position: absolute;
-  bottom: 6vw;
-  right: 20vw;
-  font-weight: 400;
-  letter-spacing: -0.01em;
-  font-size: 12px;
-  text-align: right;
-`
 export function ArtistPage({artistData}) {
   const animate = useRef(false);
   const [ready, setReady] = useState(false)
   
-  const { id, albumName, featuredSongName, niceName, nextArtistSlug, nextArtistLinkText } = artistData
+  const { id, albumName, featuredSongName, niceName, nextArtistSlug, nextArtistLinkText, bandcampUrl, soundcloudUrl } = artistData
 
   return (
     <>
-      <div className="main-content">
-          <div className="item__album">
-            {albumName}
+      <div className="main-content z-1 flex flex-col justify-start md:justify-between md:h-full-screen mt-[50px] md:mt-[130px] md:px-28 lg:px-60">
+        <div className='bar-horizontal-thin' />
+        <div className='bar-horizontal' />
+        <div className='bar-vertical' />
+        <div className='right-middle z-10 hover:underline'>
+          <a href={`/artists/${nextArtistSlug}`}>
+            <p><span className='text-lg'>↓</span> {nextArtistLinkText} </p>
+          </a>
+        </div>
+        <div className='left-middle bar-vertical'>
+          <h2 className="">KSCHK{id < 10 ? `00${id} ` : id}</h2>
+        </div>
+        <div className='flex flex-col justify-start md:flex-row md:justify-between items-top h-[400px]'>
+          <div className="item__album z-10">
+            <h3>{albumName}</h3>
             <div>
               <p>Listen to {featuredSongName}</p>
               <button onClick={(e) => {
@@ -73,34 +34,30 @@ export function ArtistPage({artistData}) {
               }>{ready ? '||' : '▶'}</button>
             </div>
           </div>
-          <h2 className="item__artist"><em>by</em> {niceName}</h2>
-          <LeftMiddle>
-            <span className="">KSCHK{id < 10 ? `00${id} ` : id}</span>
-          </LeftMiddle>
-          <Bar />
-          <Bar vertical />
-        <BottomLeft>
-          <a href={``}>
-            Bandcamp
-          </a>
-          <a href={``}>
-            Soundcloud
-          </a>
-        </BottomLeft>
-        <RightLink>
-          <a href={`/artists/${nextArtistSlug}`}>
-            <span className="mr-3">&darr;</span> 
-            <span>{nextArtistLinkText}</span>
-          </a>
-        </RightLink>
-        <BottomRight>
-          <p> {artistData.albumName} was produced by {artistData.producer}.</p>
-          <p> Mastered by {artistData.masteredBy}. Album Art by {artistData.coverArtist}.</p> 
-          <p>Released on {artistData.releaseDate}.</p>
-        </BottomRight>
+          <div>
+            <h2 className="item__artist"><em>by</em> {niceName}</h2>
+          </div>
+        </div>
+        <div className='flex flex-col justify-start items-start md:flex-row justify-between md:items-end'>
+          <div className="flex flex-col z-10">
+            <p><a href={bandcampUrl} target="_blank" rel="noreferrer">
+              Bandcamp
+            </a></p>
+            <p><a href={soundcloudUrl} target="_blank" rel="noreferrer">
+              Soundcloud
+            </a></p>
+          </div>
+          <div className="meta text-left md:text-right">
+            <p> {artistData.albumName} was produced by {artistData.producer}.</p>
+            <p> Mastered by {artistData.masteredBy}. Album Art by {artistData.coverArtist}.</p> 
+            <p>Released on {artistData.releaseDate}.</p>
+          </div>
+        </div>
       </div>
-      <div className='sound-visualizer'>
-        <Canvas shadows dpr={[1, 2]} camera={{ position: [-1, 1.5, 100], fov: 25 }}>
+
+      <div className='sound-visualizer -ml-5'>
+        <Canvas shadows dpr={[1, 2]} camera={{ position: [-0.5, 1.5, 100], fov: 25 }}>
+          <OrbitControls />
           <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
           <Suspense fallback={null}
           >

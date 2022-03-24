@@ -112,15 +112,6 @@ p {
   color: inherit;
 }
 
-.main-content {
-  z-index: 1;
-  margin-top: 20vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
 .main-content.artist-info {
   justify-content: left;
   z-index: 1000;
@@ -136,7 +127,9 @@ a:hover,
 a:focus {
   color: var(--color-link-hover);  
   outline: none;
+  text-decoration: underline;
 }
+
 div {
   transition: all .3s ease-in-out;
 }
@@ -163,7 +156,6 @@ div {
 .item:hover{
   border-bottom: 2px solid #000;
   border-right: 2px solid #000;
-
 }
 
 @keyframes fadein {
@@ -191,10 +183,10 @@ div {
 
 .item__canvas {
   position: absolute;
-  width: 95%;
-  height: 95%;
-  top: 5px;
-  left: 5px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   -webkit-animation: fadein 5s; /* Safari, Chrome and Opera > 12.1 */
   -moz-animation: fadein 5s; /* Firefox < 16 */
    -ms-animation: fadein 5s; /* Internet Explorer */
@@ -247,7 +239,6 @@ img.item__img {
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
   -webkit-animation: fadein 5s; /* Safari, Chrome and Opera > 12.1 */
   -moz-animation: fadein 10s; /* Firefox < 16 */
    -ms-animation: fadein 10s; /* Internet Explorer */
@@ -267,7 +258,14 @@ img.item__img {
   height: 60px;
   width: 60px;
   cursor: pointer;
-  background-image: url("/kshack-logo.jpg");
+  background-image: url("/kshack-logo_1_1.svg");
+}
+
+.logo:hover {
+  height: 60px;
+  width: 60px;
+  cursor: pointer;
+  background-image: url("/kshack-logo_2_1.svg");
 }
 
 .left-middle {
@@ -285,15 +283,15 @@ img.item__img {
 
 .bottom-left {
   position: absolute;
-  bottom: 6vw;
-  left: 6vw;
+  bottom: 5vw;
+  left: 5vw;
   font-size: 12px;
 }
 
 .bottom-right {
   position: absolute;
-  bottom: 6vw;
-  right: 6vw;
+  bottom: 5vw;
+  right: 5vw;
   font-weight: 400;
   letter-spacing: -0.01em;
   font-size: 12px;
@@ -303,7 +301,7 @@ img.item__img {
 .right-middle {
   position: absolute;
   bottom: 50%;
-  right: 6vw;
+  right: 5vw;
   font-weight: 400;
   letter-spacing: -0.01em;
   font-size: 12px;
@@ -328,13 +326,17 @@ img.item__img {
   background: #252525;
 }
 
-.bar-horizontal {
+.bar-horizontal, .bar-horizontal-thin {
   position: absolute;
   top: 50%;
   left: 0px;
   width: 150px;
-  height: 2px;
+  height: 5px;
   background: #252525;
+}
+
+.bar-horizontal-thin {
+  height: 2px;
 }
 
 .main-image {
@@ -343,5 +345,50 @@ img.item__img {
   height: 100vh;
   top: 0;
   margin-left: -50px;
+}
+
+.main-content .left-middle {
+  background-color: white;
+  font-family: 'Akkurat-Mono';
+  padding: 5px;
+  letter-spacing: 0.2em;
+  font-size: 16px;
+  transform: rotate(-90deg) translate3d(21px, 60px, 0);
+  transform-origin: 50% 50%;
   z-index: -1;
+}
+
+.main-content .meta {
+  font-family: 'Akkurat-Light';
+}
+
+.main-content .bar-horizontal {
+  top: 31.5%;
+}
+
+.main-content .bar-horizontal-thin {
+  top: 30.7%;
+
+}
+
+.main-content .bar-vertical {
+  top: 40%;
+}
+
+.main-content .right-middle {
+  position: absolute;
+  bottom: 50%;
+  font-family: 'Akkurat-Light';
+
+  right: 5vw;
+  font-weight: 400;
+  line-height: 1em;
+  letter-spacing: -0.01em;
+  font-size: 12px;
+  transform: rotate(-90deg) translate3d(50%, 0, 0);
+  transform-origin: 100% 50%;
+}
+
+.main-content .right-middle p {
+  font-family: 'Akkurat-Light';
 }

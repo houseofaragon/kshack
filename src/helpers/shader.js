@@ -20,12 +20,7 @@ void main() {
     float g = texture(uTexture, dUv + vec2(0., 0.) + uProg * w * 0.0).g;
     float b = texture(uTexture, dUv + vec2(0., 0.) + uProg * w * -0.02).b;
     textureNew = vec3(r, g, b);    
-  } else if (uIndex < 6.) {
-    float count = 10.;
-    float smoothness = 0.5;
-    float pr = smoothstep(-smoothness, 0., dUv.y - (1. - uProg) * (1. + smoothness));
-    float s = 1. - step(pr, fract(count * dUv.y));
-    textureNew = texture(uTexture, dUv * s).rgb;
+
   } else {
     dUv.y += wave * 0.05;
     float r = texture(uTexture, dUv + vec2(0., 0.)).r;
@@ -152,17 +147,13 @@ float noise(vec3 v) {
 void main() {
   vec3 pos = position;
 
-  if (uIndex < 3.) {      
-    pos.z += noise(vec3(pos.x * 4. + uTime, pos.y, 0.)) * uProg;
+    // pos.z += noise(vec3(pos.x * 2. + uTime, pos.y, 0.)) * tan(pos.z * 5. + uTime)  * uProg;
+    pos.z += noise(vec3(pos.x * 2. + uTime, pos.y, 0.)) * tan(pos.z * 5. + uTime)  * uProg;
+
     wave = pos.z;
     pos.z *= 3.;    
-  } else if (uIndex < 6.) {
-    float pr = smoothstep(0., 0.5 - sin(pos.y), uProg) * 5.;
-    pos.z += pr;
-  } else {
-    pos.z += sin(pos.y * 5. + uTime) * 2. * uProg;
+    pos.z += noise(vec3(pos.x * 4. + uTime, pos.y, 0.)) * cos(pos.z * 5. + uTime) * 2. * uProg;
     wave = pos.z;
-  }
 
   vUv = uv;
 

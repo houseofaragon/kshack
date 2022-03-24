@@ -2,13 +2,13 @@ import Link from 'next/link'
 
 export function Header() {
   return (
-    <div className="header menu">
+    <div className="header menu z-10">
       <div>
         <Link href="/" passHref><div className='logo' /></Link>
       </div>
-      <div>
-        <span className="pr-5"><Link href="/artists">Artists</Link></span>
-        <Link href="/about">About</Link>
+      <div className='text-right'>
+        <span className="pr-7"><Link href="/artists">Artists</Link></span>
+        <Link href="/about">Contact</Link>
       </div>
     </div>
   )

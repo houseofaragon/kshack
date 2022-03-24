@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import React, { useRef, useEffect, useMemo } from 'react'
-import { Canvas, extend, useThree, useFrame } from '@react-three/fiber'
+import { extend, useThree, useFrame } from '@react-three/fiber'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
@@ -35,7 +35,6 @@ function Boxes({ material: Material = 'meshStandardMaterial', amount = 100, spre
   useEffect(state => {
     coords.forEach(([x, y, z], i) => {
       //dummy.rotation.x += 0.01
-
       dummy.position.set(x, y, z)
       dummy.updateMatrix()
       mesh.current.setMatrixAt(i, dummy.matrix)
@@ -45,7 +44,7 @@ function Boxes({ material: Material = 'meshStandardMaterial', amount = 100, spre
 
   return (
     <instancedMesh ref={mesh} args={[null, null, amount]} {...props} receiveShadow castShadow>
-      <boxBufferGeometry attach="geometry" args={[0.2, 18, 0.2]}/>
+      <boxBufferGeometry attach="geometry" args={[0.2, 5, 0.2]}/>
       <Material attach="material" color={color} roughness={1} />
     </instancedMesh>
   )
@@ -68,7 +67,7 @@ function Content() {
   useFrame(() => (ref.current.rotation.x = ref.current.rotation.y = ref.current.rotation.z += 0.005))
   return (
     <group ref={ref}>
-      <Boxes amount={60} material="meshBasicMaterial" color="#e0e0e0" />
+      <Boxes amount={10} material="meshBasicMaterial" color="#e0e0e0" />
       <Boxes amount={10} color="#575760" />
     </group>
   )
