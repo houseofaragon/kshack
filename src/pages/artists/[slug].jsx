@@ -40,6 +40,6 @@ export async function getStaticPaths() {
   return {
     paths,
     // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths
-    fallback: true,
+    fallback: false,
   }
 }

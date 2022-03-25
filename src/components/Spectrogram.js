@@ -10,15 +10,15 @@ import glsl from 'glslify';
 const frequency_samples = 512;
 const frequenceData = new Uint8Array(frequency_samples);
 
-export function Spectrogram({animate, song, songBuffer, random = true}) {
+export function Spectrogram({animate, songBuffer, random = true}) {
   return (
-    <SpectrogramViz url={song} animate={animate} random={random}/>
+    <SpectrogramViz songBuffer={songBuffer} animate={animate} random={random}/>
   )
 }
 
-function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, random = false, ...props }) {
+function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05, obj = new THREE.Object3D(), animate, random = false,songBuffer, ...props }) {
   const ref = useRef()
-  const { gain, context, update, data, analyser } = useAsset(() => createAudio(url), url)
+  const { gain, context, update, data, analyser } = useAsset(() => createAudio(songBuffer), songBuffer)
 
   // https://calebgannon.com/2021/01/09/spectrogram-with-three-js-and-glsl-shaders/
   // https://codepen.io/raybradbury/pen/jOadgpd?editors=1010
@@ -179,11 +179,9 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
   )
 }
 
-async function createAudio(url) {
+async function createAudio(buffer) {
   try {
-    // Fetch audio data and create a buffer source
-    const res = await fetch(url)
-    const buffer = await res.arrayBuffer()
+    // const buffer = await url.arrayBuffer()
     const context = new (window.AudioContext || window.webkitAudioContext)()
     const source = context.createBufferSource()
     source.buffer = await new Promise((res) => context.decodeAudioData(buffer, res))

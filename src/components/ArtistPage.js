@@ -1,4 +1,4 @@
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useRef, useState, useEffect } from 'react'
 import { Spectrogram } from './Spectrogram'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
@@ -6,8 +6,19 @@ import { OrbitControls } from '@react-three/drei'
 export function ArtistPage({artistData}) {
   const animate = useRef(false);
   const [ready, setReady] = useState(false)
-  
+  const [songBuffer, setSongBuffer] = useState(null)
+
   const { id, albumName, featuredSongName, niceName, nextArtistSlug, nextArtistLinkText, bandcampUrl, soundcloudUrl } = artistData
+
+  useEffect(() => {
+    const fetchSong = async () => {
+      const data = await fetch(artistData.featuredSongUrl)
+      const buffer = await data.arrayBuffer()
+      setSongBuffer(buffer)
+    }
+
+    fetchSong()
+  }, [])
 
   return (
     <>
@@ -28,10 +39,10 @@ export function ArtistPage({artistData}) {
             <h3>{albumName}</h3>
             <div>
               <p>Listen to {featuredSongName}</p>
-              <button onClick={(e) => {
+              {songBuffer ? <button onClick={(e) => {
               e.preventDefault()
               setReady(!ready)}
-              }>{ready ? '||' : '▶'}</button>
+              }>{ready ? '||' : '▶'}</button> : <p>Loading...</p>}
             </div>
           </div>
           <div>
@@ -55,7 +66,7 @@ export function ArtistPage({artistData}) {
         </div>
       </div>
 
-      <div className='sound-visualizer -ml-5'>
+      {songBuffer && <div className='sound-visualizer -ml-5'>
         <Canvas shadows dpr={[1, 2]} camera={{ position: [-0.5, 1.5, 100], fov: 25 }}>
           <OrbitControls />
           <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
@@ -63,11 +74,11 @@ export function ArtistPage({artistData}) {
           >
             <Spectrogram
               animate={ready}
-              song={artistData.featuredSongUrl}
+              songBuffer={songBuffer}
               random={false} />
           </Suspense>
         </Canvas>
-      </div>
+      </div>}
     </>
   )
 }
