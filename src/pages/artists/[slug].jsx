@@ -13,7 +13,6 @@ export default function Index({artistData}) {
 }
 
 export async function getStaticProps({params}) {
-  console.log('params', params.slug)
   const response = await getArtistBySlug(params.slug)
   if (!(response && response.length)) {
     return {

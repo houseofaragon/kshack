@@ -48,7 +48,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
     }
 
     return [heights]
-  }, [xhalfSize, xsegmentSize, xsegments, yhalfSize, ysegmentSize, ysegments]);
+  });
 
   const [indices, positions, lookUpTable] = useMemo(() => {
     let indices = [];
@@ -92,7 +92,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
       positions,
       lookUpTable
     ]
-  }, [xhalfSize, xsegmentSize, xsegments, yhalfSize, ysegmentSize, ysegments])
+  })
 
   const shaderMaterialData = useMemo(
     () => ({
@@ -105,7 +105,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
       fragmentShader,
       vertexShader
     }),
-    [lookUpTable]
+    []
   )
 
   useEffect(() => {
@@ -182,7 +182,7 @@ function SpectrogramViz({ url, y = 2500, space = 3, width = 0.01, height = 0.05,
 async function createAudio(url) {
   try {
     // Fetch audio data and create a buffer source
-    const res = await fetch('https://s3.amazonaws.com/fifteen.pm/aef315/12asdf4f2')
+    const res = await fetch(url)
     const buffer = await res.arrayBuffer()
     const context = new (window.AudioContext || window.webkitAudioContext)()
     const source = context.createBufferSource()
@@ -215,7 +215,6 @@ async function createAudio(url) {
       },
     }
   } catch (error) {
-    console.log(error)
     throw new Error(error)
   }
 }
