@@ -31,8 +31,8 @@ export function Artists({ artists }) {
   return (
     <div className='grid gap-10 grid-cols-1 md:grid-cols-2 md:mt-20 lg:grid-cols-3 mt-10 content-center'>
       {artists.map((artist, index) => {
-        const { niceName, albumName, albumImage, slug } = artist.attributes
-        const imgSrc = `http://localhost:1337${albumImage.data.attributes.url}`
+        const { niceName, albumName, slug, name } = artist.attributes
+        const imgSrc = `https://kshack-assets.s3.amazonaws.com/${name}/${slug}.png`
 
         const artistPagePath = `/artists/${slug}`;
 

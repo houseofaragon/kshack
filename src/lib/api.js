@@ -28,6 +28,7 @@ export async function getAllArtists() {
         data {
           id,
           attributes {
+            name,
             niceName,
             albumName,
             albumImage {
