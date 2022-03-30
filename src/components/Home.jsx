@@ -19,11 +19,11 @@ export function Home() {
         <a target="_blank" href="https://soundcloud.com/kschk/" rel="noreferrer">Soundcloud</a>
       </div>
       <div className='right-middle'>An excellent shack.</div>
-      <div className='left-middle'>
+      <div className='left-middle ml-[-70%]'>
         <p>Hi, we're KSHACK.</p>
         <p>Our latest release is Vermillion by Isn't Ours.</p>
       </div>
-      <div className='bar-horizontal' />
+      <div className='bar-horizontal hidden lg:block' />
       <div className='bar-vertical' />
     </>
   )
