@@ -2,14 +2,8 @@ import * as THREE from 'three'
 import { render } from 'react-dom'
 import React, { useRef, useEffect, useMemo } from 'react'
 import { Canvas, extend, useThree, useFrame } from '@react-three/fiber'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
-import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass'
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
-import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
+import { EffectComposer, DepthOfField, Bloom, Noise, Vignette } from '@react-three/postprocessing'
 
-extend({ EffectComposer, ShaderPass, RenderPass, UnrealBloomPass, SSAOPass })
 
 export default function Effects() {
   const composer = useRef()
@@ -17,12 +11,12 @@ export default function Effects() {
   useEffect(() => void composer.current.setSize(size.width, size.height), [size])
   useFrame(() => composer.current.render(), 1)
   return (
-    <effectComposer ref={composer} args={[gl]}>
-      <renderPass attachArray="passes" scene={scene} camera={camera} />
-      <sSAOPass attachArray="passes" args={[scene, camera, 1024, 1024]} kernelRadius={0.8} maxDistance={0.4} />
-      <unrealBloomPass attachArray="passes" args={[undefined, 1.6, 1, 0.5]} />
-      <shaderPass attachArray="passes" args={[FXAAShader]} material-uniforms-resolution-value={[1 / size.width, 1 / size.height]} />
-    </effectComposer>
+    <EffectComposer ref={composer} args={[gl]}>
+        <DepthOfField focusDistance={0} focalLength={0.02} bokehScale={2} height={480} />
+        <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
+        <Noise opacity={0.02} />
+        {/* <Vignette eskil={false} offset={0.1} darkness={1.1} /> */}
+    </EffectComposer>
   )
 }
 

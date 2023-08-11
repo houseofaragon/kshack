@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { useEffect, useRef } from 'react'
-import { Canvas, useFrame, useLoader } from 'react-three-fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
+
 import { useAsset } from 'use-asset'
 
 export function SoundVisualizer({animate, artistImgSrc}) {
