@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useMemo, Suspense } from 'react'
-import { Canvas, useFrame, useLoader } from 'react-three-fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 
 import { ArtistImage } from './ArtistImage'
 import { useNavigate, Link } from 'react-router-dom'

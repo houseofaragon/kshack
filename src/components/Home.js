@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { Canvas, useLoader } from 'react-three-fiber'
+import { Canvas, useLoader } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Suspense } from 'react'
 import { Blob } from './Blob'

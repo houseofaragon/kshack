@@ -5,7 +5,7 @@ KSHACK is the website for KSHACK label.
 Built using 
 
 1. react 
-2. react-three-fiber
+2. @react-three/fiber
 3. Tailwind.css https://tailwindcss.com/docs/guides/create-react-app
 
 ## Installation

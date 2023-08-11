@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Canvas, useFrame, useLoader } from 'react-three-fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { useMemo, useState, useRef } from 'react'
 import glsl from 'glslify';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
@@ -37,7 +37,7 @@ export function ArtistImage({src, index}) {
     []
   )
   
-  /* https://onion2k.hashnode.dev/using-a-useframe-render-hook-in-react-three-fiber */
+  /* https://onion2k.hashnode.dev/using-a-useframe-render-hook-in-@react-three/fiber */
   useFrame((state, delta) => {
     if (imageRef && imageRef.current && hover) {
       imageRef.current.material.uniformsNeedUpdate = true;

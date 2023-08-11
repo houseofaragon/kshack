@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { useEffect, useRef, useMemo } from 'react'
-import { Canvas, useFrame, useLoader } from 'react-three-fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { useAsset } from 'use-asset'
 import { colorMatrix } from '../util/utils'
 import { fragmentShader, vertexShader}  from '../assets/spectrogramShader'

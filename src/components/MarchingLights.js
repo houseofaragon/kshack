@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback } from "react";
-import { useFrame, useThree } from "react-three-fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import lerp from "lerp";
 import { MarchingCubes } from "three/examples/jsm/objects/MarchingCubes";
