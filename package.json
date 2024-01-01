@@ -23,19 +23,22 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.54.1",
     "@babel/plugin-transform-runtime": "^7.17.0",
+    "@react-spring/three": "^9.7.3",
     "@react-three/drei": "^8.16.5",
     "@react-three/fiber": "^7.0.26",
     "babel-plugin-glsl": "^1.0.0",
     "glsl-random": "^0.0.5",
     "graphql-tag": "^2.12.6",
     "gsap": "^3.9.1",
-    "next": "^12.1.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
     "shader": "^1.0.0",
     "styled-components": "^5.3.3",
     "three": "^0.138.3",
     "three-stdlib": "^2.8.8",
+    "use-asset": "^1.0.4",
     "zustand": "^3.7.1"
   },
   "devDependencies": {
@@ -55,5 +58,6 @@
     "raw-loader": "^4.0.2",
     "tailwindcss": "^3.0.18",
     "url-loader": "^4.1.1"
-  }
+  },
+  "packageManager": "yarn@4.0.2"
 }
