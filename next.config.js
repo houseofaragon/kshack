@@ -2,6 +2,10 @@ module.exports = {
   // env: {
   //   API_URL: 'http://localhost:1337/api',
   // },
+  compiler: {
+      // Enables the styled-components SWC transform
+      styledComponents: true
+  },
   exportPathMap: async function() {
     const paths = {
       '/': { page: '/'},
