@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Suspense } from 'react'
+import { Suspense, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 
 import { ArtistImage } from '@/components/ArtistImage'
@@ -26,13 +26,12 @@ export const LeftMiddle = styled.div`
   transform: rotate(270deg) translate3d(100%, 0, 0);
   transform-origin: 100% 50%;
 `
-
 export function Artists({ artists }) {
   return (
     <div className='grid gap-10 grid-cols-1 md:grid-cols-2 md:mt-20 lg:grid-cols-3 mt-10 content-center'>
       {artists.map((artist, index) => {
-        const { niceName, albumName, slug, name, albumImage } = artist.attributes
-        const imgSrc = albumImage.data.attributes.url
+        const { niceName, albumName, slug, name } = artist.attributes
+        const imgSrc = `https://kshack-assets.s3.amazonaws.com/${name}/${slug}.png`
         const artistPagePath = `/artists/${slug}`;
 
         return (
