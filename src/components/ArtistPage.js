@@ -8,8 +8,8 @@ export function ArtistPage({artistData}) {
   const [ready, setReady] = useState(false)
   const [songBuffer, setSongBuffer] = useState(null)
 
-  const { id, albumName, featuredSongName, niceName, nextArtistSlug, nextArtistLinkText, bandcampUrl, soundcloudUrl } = artistData
-
+  const { id, albumName, featuredSongName, niceName, nextArtistSlug, nextArtistLinkText, prevArtistLinkText, prevArtistSlug, bandcampUrl, soundcloudUrl } = artistData
+  console.log(artistData)
   useEffect(() => {
     const fetchSong = async () => {
       const data = await fetch(artistData.featuredSongUrl)
@@ -26,6 +26,11 @@ export function ArtistPage({artistData}) {
         <div className='bar-horizontal-thin' />
         <div className='bar-horizontal' />
         <div className='bar-vertical' />
+        <div className='z-10 left-middle-link hover:underline'>
+          <a href={`/artists/sleep-300-reduction`}>
+            <p><span className='text-lg'>↓</span> {prevArtistLinkText} </p>
+          </a>
+        </div>
         <div className='right-middle z-10 hover:underline'>
           <a href={`/artists/${nextArtistSlug}`}>
             <p><span className='text-lg'>↓</span> {nextArtistLinkText} </p>

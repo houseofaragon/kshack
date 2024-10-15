@@ -4,6 +4,7 @@ import { Blob } from './Boxes'
 import * as THREE from 'three'
 
 export function Home() {
+  
   return (
     <>
      <div className="main-image">

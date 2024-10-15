@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import glsl from 'glslify';
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
 import { a } from '@react-spring/three'
@@ -8,18 +8,50 @@ import gsap from 'gsap';
 
 import { fragmentShader, vertexShader}  from '@/helpers/shader'
 
+async function isValidImage(url) {
+  try {
+      const response = await fetch(url);
+      if (!response.ok) {
+          return false;
+      }
+      const blob = await response.blob();
+      const img = new Image();
+      return new Promise((resolve) => {
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = URL.createObjectURL(blob);
+      });
+  } catch (error) {
+      console.error('Error fetching the image:', error);
+      return false;
+  }
+}
+
 /*
  Load texture into shader
  https://codesandbox.io/s/divine-shape-wqf6f?from-embed=&file=/src/App.js:90-155
  https://codesandbox.io/s/02-make-some-noise-forked-inj5q?file=/src/gl/index.js
  https://codesandbox.io/s/03-adding-the-texture-forked-h6sup?file=/src/gl/index.js
 */
+const defaultImageSrc = `https://kshack-assets.s3.amazonaws.com/ronnie-makebelieve/ronnie-makebelieve-muon.png`;
+
 export function ArtistImage({src, index}) {
+  const [imageSrc, setImageSrc] = useState(defaultImageSrc)
+
+  useEffect(() => {
+    const checkImage = async () => {
+        const valid = await isValidImage(src);
+        setImageSrc(valid ? src : defaultImageSrc); // Use default image if invalid
+    };
+
+    checkImage();
+  }, [imageSrc]);
+
   const imageRef = useRef()
   const [hover, setHover] = useState(false);
-
   const plane = useMemo(() => <planeGeometry attach="geometry" args={[5, 5, 32, 32]} />, [])
-  const texture = useLoader(TextureLoader, src)
+  
+  const texture = useLoader(TextureLoader, imageSrc)
   texture.minFilter = THREE.LinearFilter;
   texture.generateMipmaps = false;
   

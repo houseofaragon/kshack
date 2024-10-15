@@ -24,7 +24,7 @@ async function fetchApi(query) {
 export async function getAllArtists() {
   const query = `
     query Artists {
-      artists {
+      artists(pagination: { page: 1, pageSize: 100 }) {
         data {
           id,
           attributes {
@@ -52,7 +52,7 @@ export async function getAllArtists() {
 export async function getAllArtistSlugs() {
   const query = `
     query Artists {
-      artists {
+      artists(pagination: { page: 1, pageSize: 100 }) {
         data {
           attributes {
             slug
@@ -82,6 +82,8 @@ export async function getArtistBySlug(slug) {
           producer,
           bandcampUrl,
           soundcloudUrl,
+          prevArtistSlug,
+          prevArtistLinkText,
           nextArtistSlug,
           nextArtistLinkText,
           albumImage {
