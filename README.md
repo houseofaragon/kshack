@@ -21,6 +21,9 @@ npm run dev
 ```bash
 # Run the project
 npm run build-export
+
+# Netlify
+https://app.netlify.com/sites/kshack/deploys
 ```
 
 ## License
