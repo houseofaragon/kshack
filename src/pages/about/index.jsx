@@ -11,6 +11,7 @@ export default function About() {
         <p><a href="https://soundcloud.com/kschk/" target="_blank" rel="noreferrer" >Soundcloud</a></p>
         <p> <a href="https://soundcloud.com/kschk/" target="_blank" rel="noreferrer" >Instagram</a></p> 
         <p> <a href="https://open.spotify.com/playlist/4gMewBIPO6NwNUSefKeenP?si=201ac2a1b3444d27" target="_blank" rel="noreferrer" >Spotify</a></p>
+        <p> <a href="https://linktr.ee/kschk" target="_blank" rel="noreferrer" >Linktree</a></p>
       </div>
       </div>
 
