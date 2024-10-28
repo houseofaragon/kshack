@@ -8,24 +8,24 @@ import gsap from 'gsap';
 
 import { fragmentShader, vertexShader}  from '@/helpers/shader'
 
-async function isValidImage(url) {
-  try {
-      const response = await fetch(url);
-      if (!response.ok) {
-          return false;
-      }
-      const blob = await response.blob();
-      const img = new Image();
-      return new Promise((resolve) => {
-          img.onload = () => resolve(true);
-          img.onerror = () => resolve(false);
-          img.src = URL.createObjectURL(blob);
-      });
-  } catch (error) {
-      console.error('Error fetching the image:', error);
-      return false;
-  }
-}
+// async function isValidImage(url) {
+//   try {
+//       const response = await fetch(url);
+//       if (!response.ok) {
+//           return false;
+//       }
+//       const blob = await response.blob();
+//       const img = new Image();
+//       return new Promise((resolve) => {
+//           img.onload = () => resolve(true);
+//           img.onerror = () => resolve(false);
+//           img.src = URL.createObjectURL(blob);
+//       });
+//   } catch (error) {
+//       console.error('Error fetching the image:', error);
+//       return false;
+//   }
+// }
 
 /*
  Load texture into shader
@@ -36,16 +36,16 @@ async function isValidImage(url) {
 const defaultImageSrc = `https://kshack-assets.s3.amazonaws.com/salem-hilal-bite.png`;
 
 export function ArtistImage({src, index}) {
-  const [imageSrc, setImageSrc] = useState(defaultImageSrc)
+  // const [imageSrc, setImageSrc] = useState(defaultImageSrc)
 
-  useEffect(() => {
-    const checkImage = async () => {
-        const valid = await isValidImage(src);
-        setImageSrc(valid ? src : defaultImageSrc); // Use default image if invalid
-    };
+  // useEffect(() => {
+  //   const checkImage = async () => {
+  //       const valid = await isValidImage(src);
+  //       setImageSrc(valid ? src : defaultImageSrc); // Use default image if invalid
+  //   };
 
-    checkImage();
-  }, [imageSrc]);
+  //   checkImage();
+  // }, [imageSrc]);
 
   // const imageRef = useRef()
   // const [hover, setHover] = useState(false);
@@ -106,6 +106,6 @@ export function ArtistImage({src, index}) {
     //     fragmentShader: glsl(shaderMaterialData.fragmentShader),
     //   }]} />
     // </a.mesh>    
-    <img src={imageSrc} alt="Artist" className=''  />
+    <img src={src} alt="Artist" className=''  />
   )
 }
