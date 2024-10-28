@@ -1,29 +1,11 @@
-import { Suspense, useRef, useState, useEffect } from 'react'
-import { Spectrogram } from './Spectrogram'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
-
 export function ArtistPage({artistData}) {
-  // const animate = useRef(false);
-  // const [ready, setReady] = useState(false)
-  // const [songBuffer, setSongBuffer] = useState(null)
-
-  const { id, albumName, niceName, nextArtistSlug, nextArtistLinkText, prevArtistLinkText, prevArtistSlug, bandcampUrl, soundcloudUrl, soundcloudPlaylistId, description } = artistData
+   const { id, albumName, niceName, nextArtistSlug, nextArtistLinkText, prevArtistLinkText, prevArtistSlug, bandcampUrl, soundcloudUrl, soundcloudPlaylistId, description } = artistData
   
   const iframeSrc = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/${soundcloudPlaylistId}&color=%230a0a0a&auto_play=false&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false`
-  // useEffect(() => {
-  //   const fetchSong = async () => {
-  //     const data = await fetch(artistData.featuredSongUrl)
-  //     const buffer = await data.arrayBuffer()
-  //     setSongBuffer(buffer)
-  //   }
-
-  //   fetchSong()
-  // }, [])
 
   return (
     <>
-      <div className='min-w-4rem'>
+      <div className='min-w-4rem left-right-link-holder'>
         <div className='z-10 left-middle-link hover:underline'>
             <a className="ml-0" href={`/releases/${prevArtistSlug}`}>
               <span className='lg:hidden md:hidden inline-block'>←</span> <span className='lg:inline-block md:inline-block hidden m-2'>↓</span>{prevArtistLinkText} 
@@ -79,20 +61,6 @@ export function ArtistPage({artistData}) {
           <p>{description}</p>
         </div>
       </div>
-
-      {/* {songBuffer && <div className='sound-visualizer -ml-5'>
-        <Canvas shadows dpr={[1, 2]} camera={{ position: [-0.5, 1.5, 100], fov: 25 }}>
-          <OrbitControls />
-          <spotLight position={[-4, 4, -4]} angle={0.06} penumbra={1} castShadow shadow-mapSize={[2048, 2048]} />
-          <Suspense fallback={null}
-          >
-            <Spectrogram
-              animate={ready}
-              songBuffer={songBuffer}
-              random={false} />
-          </Suspense>
-        </Canvas>
-      </div>} */}
     </>
   )
 }
