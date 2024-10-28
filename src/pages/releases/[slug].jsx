@@ -1,4 +1,4 @@
-import { ArtistPage } from "@/components/ArtistPage";
+import { ArtistPage } from "@/components/ReleasePage";
 import { Layout } from "@/components/Layout";
 import { getAllArtistSlugs, getArtistBySlug } from "@/lib/api";
 
@@ -35,7 +35,7 @@ export async function getStaticProps({params}) {
 
 export async function getStaticPaths() {
   const slugs = await getAllArtistSlugs()
-  const paths = slugs.map(artist => `/artists/${artist.attributes.slug}`)
+  const paths = slugs.map(artist => `/releases/${artist.attributes.slug}`)
 
   return {
     paths,

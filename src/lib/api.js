@@ -15,7 +15,7 @@ async function fetchApi(query) {
   const data = await response.json()
 
   if (data.errors) {
-    throw new Error(`Failed to fetch data: ${data.errors}`)
+    throw new Error(`Failed to fetch data: ${JSON.stringify(data.errors, null, 4)}`)
   }
 
   return data.data
@@ -24,7 +24,10 @@ async function fetchApi(query) {
 export async function getAllArtists() {
   const query = `
     query Artists {
-      artists(pagination: { page: 1, pageSize: 100 }) {
+      artists(
+        pagination: { page: 1, pageSize: 100},
+        sort: "id:DESC"
+      ) {
         data {
           id,
           attributes {
@@ -38,13 +41,13 @@ export async function getAllArtists() {
                 }
               }
             }
+            releaseDate,
             slug
           }
         }
       }
     }
   `
-
   const data = await fetchApi(query)
   return data?.artists?.data
 }
@@ -82,10 +85,12 @@ export async function getArtistBySlug(slug) {
           producer,
           bandcampUrl,
           soundcloudUrl,
+          soundcloudPlaylistId,
           prevArtistSlug,
           prevArtistLinkText,
           nextArtistSlug,
           nextArtistLinkText,
+          description,
           albumImage {
             data {
               attributes {

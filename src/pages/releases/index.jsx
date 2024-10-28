@@ -1,4 +1,4 @@
-import { Artists } from "@/components/Artists"
+import { Artists } from "@/components/Releases"
 import { Layout } from "@/components/Layout"
 import { getAllArtists } from "@/lib/api"
 
