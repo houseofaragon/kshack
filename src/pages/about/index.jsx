@@ -18,7 +18,7 @@ export default function About() {
     <div className='bottom-left flex flex-col'>
       </div>
       <div className='bottom-right'>
-        We are based in NY.
+        Founded in NYC.
       </div>
       <div className='right-middle'>An excellent shack.</div>
       <div className='bar-horizontal' />
