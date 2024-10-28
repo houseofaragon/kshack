@@ -10,6 +10,7 @@ export default function About() {
         <p className="pt-7"><a href="https://kshack.bandcamp.com/" target="_blank" rel="noreferrer" >Bandcamp</a></p>
         <p><a href="https://soundcloud.com/kschk/" target="_blank" rel="noreferrer" >Soundcloud</a></p>
         <p> <a href="https://soundcloud.com/kschk/" target="_blank" rel="noreferrer" >Instagram</a></p> 
+        <p> <a href="https://open.spotify.com/playlist/4gMewBIPO6NwNUSefKeenP?si=201ac2a1b3444d27" target="_blank" rel="noreferrer" >Spotify</a></p>
       </div>
       </div>
 
