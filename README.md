@@ -1,3 +1,32 @@
-# my-app
+# Project Name
 
-This project was bootstrapped with [`create-r3f-app`](https://github.com/RenaudROHLINGER/create-r3f-app)
+## Description
+Welcome! This is the repo for NYC based record label KShack.
+
+## Installation
+```bash
+# Install dependencies
+npm insta
+```
+
+## Usage
+Run the project.
+
+```bash
+# Run the project
+npm run dev
+```
+## Build / Export
+
+```bash
+# Run the project
+npm run build-export
+```
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Technologies Used
+- React
+- React-Three-Fiber
+- NextJS
