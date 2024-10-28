@@ -426,6 +426,8 @@ img.item__img {
 @media (max-width: 768px) {
   .announcement {
     left: 20px;
+    top: 44%;
+    width: 80%;
   }
 
   .main-image {
