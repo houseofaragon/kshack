@@ -135,6 +135,8 @@ div {
 }
 
 img {
+  min-width: 125px;
+  max-width: 125px;
   filter: grayscale(100%);
   transition: filter 0.3s ease; /* Smooth transition */
 }
@@ -458,8 +460,9 @@ img.item__img {
     width: 32%;
     position: absolute;
     top: 12px;
+    min-width: 125px;
+    max-width: 125px;
   }
-
   /* .right-middle-link {
     position: absolute;
     bottom: 50%;
