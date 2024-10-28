@@ -6,7 +6,7 @@ module.exports = {
     const paths = {
       '/': { page: '/'},
       '/about': { page: '/about' },
-      '/artists': { page: '/artists' },
+      '/releases': { page: '/releases' },
       '/404': { page: '/404' },
       '/500': { page: '/500' }
     }

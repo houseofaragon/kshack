@@ -7,7 +7,7 @@ export function Header() {
         <Link href="/" passHref><div className='logo' /></Link>
       </div>
       <div className='text-right'>
-        <span className="pr-7"><Link href="/artists">Artists</Link></span>
+        <span className="pr-7"><Link href="/releases">Releases</Link></span>
         <Link href="/about">Contact</Link>
       </div>
     </div>
