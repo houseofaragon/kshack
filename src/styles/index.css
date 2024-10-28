@@ -460,7 +460,7 @@ img.item__img {
     top: 12px;
   }
 
-  .right-middle-link {
+  /* .right-middle-link {
     position: absolute;
     bottom: 50%;
     font-family: 'Akkurat-Light';
@@ -471,16 +471,23 @@ img.item__img {
     font-size: 12px;
     transform: rotate(-90deg) translate3d(50%, 0, 0);
     transform-origin: 100% 50%;
-  }
+  } */
 
   .left-middle-link {
-    transform: rotate(0deg) translate3d(-10px, -385px, 0); 
+    transform: rotate(0deg) translate3d(-25px, 0, 0); 
     transform-origin: 0% 0%;
   }
 
   .right-middle-link {
-    transform: rotate(0deg) translate3d(0px, -385px, 0); 
+    transform: rotate(0deg) translate3d(20px, 0, 0); 
     transform-origin: 0% 0%;
+  }
+
+  .left-right-link-holder {
+    position: relative;
+    top: 45px;
+    padding: 0;
+    margin: 0;
   }
 }
 
