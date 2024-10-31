@@ -6,7 +6,7 @@ export default function About() {
       <div className="main-image">
       <div className="announcement">
         <p>Hi, we're KSHACK.</p>
-        <p>You can reach us at kshack [at] gmail dot com</p>
+        <p>You can reach us at kshackrecs [at] gmail dot com</p>
         <p className="pt-7"><a href="https://kshack.bandcamp.com/" target="_blank" rel="noreferrer" >Bandcamp</a></p>
         <p><a href="https://soundcloud.com/kschk/" target="_blank" rel="noreferrer" >Soundcloud</a></p>
         <p> <a href="https://soundcloud.com/kschk/" target="_blank" rel="noreferrer" >Instagram</a></p> 
