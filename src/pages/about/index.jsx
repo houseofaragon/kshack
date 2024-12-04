@@ -1,8 +1,12 @@
 import { Layout } from "@/components/Layout";
+import Head from "next/head";
 
 export default function About() {
   return (
     <Layout>
+      <Head>
+        <title>"About"</title>
+      </Head>
       <div className="main-image">
       <div className="announcement">
         <p>Hi, we're KSHACK.</p>
@@ -18,7 +22,7 @@ export default function About() {
     <div className='bottom-left flex flex-col'>
       </div>
       <div className='bottom-right'>
-        Founded in NYC.
+        With love from NYC.
       </div>
       <div className='right-middle'>An excellent shack.</div>
       <div className='bar-horizontal' />

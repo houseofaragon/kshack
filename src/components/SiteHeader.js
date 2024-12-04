@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export function Header() {
+export function SiteHeader() {
   return (
     <div className="header menu z-10">
       <div>
