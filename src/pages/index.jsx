@@ -7,7 +7,7 @@ export default function App() {
   return (
     <Layout>
       <Head>
-        <title>"kshack recs"</title>
+        <title>kshack recs</title>
       </Head>
       <Home />
     </Layout>

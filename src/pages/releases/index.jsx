@@ -7,7 +7,7 @@ export default function Index({artists}) {
   return (
    <Layout>
     <Head>
-      <title>"Releases"</title>
+      <title>Releases</title>
     </Head>
        <Artists artists={artists} />
     </Layout>

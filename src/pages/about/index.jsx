@@ -5,7 +5,7 @@ export default function About() {
   return (
     <Layout>
       <Head>
-        <title>"About"</title>
+        <title>About</title>
       </Head>
       <div className="main-image">
       <div className="announcement">
