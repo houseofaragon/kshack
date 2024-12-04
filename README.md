@@ -6,7 +6,7 @@ Welcome! This is the repo for NYC based record label KShack.
 ## Installation
 ```bash
 # Install dependencies
-npm insta
+npm i
 ```
 
 ## Usage
@@ -18,11 +18,16 @@ npm run dev
 ```
 ## Build / Export
 
+First build:
+
 ```bash
 # Run the project
 npm run build-export
+```
 
-# Netlify
+Commit and push all changes to a Github branch to kick off a deploy on [Netlify](https://app.netlify.com/sites/kshack/deploys):
+
+```
 https://app.netlify.com/sites/kshack/deploys
 ```
 

@@ -1,14 +1,21 @@
 import { ArtistPage } from "@/components/ReleasePage";
 import { Layout } from "@/components/Layout";
 import { getAllArtistSlugs, getArtistBySlug } from "@/lib/api";
+import Head from "next/head"
 
 export default function Index({artistData}) {
   return (
-    <Layout>
-    {!artistData ? <div> oops! </div>
-    : <ArtistPage artistData={artistData} />}
-    </Layout>
-
+    !artistData ?
+      (<div> oops! </div>)
+      : 
+      (
+        <Layout>
+          <Head>
+            <title>{artistData.niceName} - {artistData.albumName}</title>
+          </Head>
+          <ArtistPage artistData={artistData} />
+        </Layout>
+      )
   )
 }
 
