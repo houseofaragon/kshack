@@ -1,5 +1,5 @@
 export function ArtistPage({artistData}) {
-   const { id, albumName, niceName, nextArtistSlug, nextArtistLinkText, prevArtistLinkText, prevArtistSlug, bandcampUrl, soundcloudUrl, soundcloudPlaylistId, description } = artistData
+   const { catalogNumber, albumName, niceName, nextArtistSlug, nextArtistLinkText, prevArtistLinkText, prevArtistSlug, bandcampUrl, soundcloudUrl, soundcloudPlaylistId, description } = artistData
   
   const iframeSrc = `https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/${soundcloudPlaylistId}&color=%230a0a0a&auto_play=false&hide_related=false&show_comments=false&show_user=false&show_reposts=false&show_teaser=false`
 
@@ -24,7 +24,7 @@ export function ArtistPage({artistData}) {
         <div className='bar-vertical' /> 
         
         <div className='left-middle-link bar-vertical'>
-          <h2 className="">KSCHK{id < 100 ? `        00${id} ` : id}</h2>
+          <h2 className="">KSCHK{catalogNumber < 100 ? `        00${catalogNumber} ` : catalogNumber}</h2>
         </div>
 
         <div className='flex flex-col justify-start md:flex-row align-center md:justify-between items-top mt-5'>

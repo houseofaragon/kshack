@@ -30,7 +30,7 @@ export function Artists({ artists }) {
   return (
     <div className='lg:mt-20 mt-10 content-center grid lg:grid-cols-4 lg:gap-8 md:grid-cols-3 md:gap-6 sm:grid-cols-1'>
       {artists.map((artist, index) => {
-        const { niceName, albumName, slug, releaseDate } = artist.attributes
+        const { niceName, albumName, slug, releaseDate } = artist
         const imgSrc = `https://kshack-assets.s3.amazonaws.com/${slug}.png`
         const artistPagePath = `/releases/${slug}`;
 
@@ -39,7 +39,7 @@ export function Artists({ artists }) {
             <div className="item">
               <div className='z-10'>
                 <LeftMiddle>
-                  <span className="item__counter">KSCHK{artist.id < 100 ? `00${artist.id} ` : artist.id}</span>
+                  <span className="item__counter">KSCHK{artist.catalogNumber < 100 ? `00${artist.catalogNumber} ` : artist.catalogNumber}</span>
                 </LeftMiddle>
                 <Bar className='md:block lg:block hidden'/>
                 <Bar vertical className='md:block lg:block hidden' />
