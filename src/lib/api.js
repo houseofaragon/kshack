@@ -23,60 +23,43 @@ async function fetchApi(query) {
 
 export async function getAllArtists() {
   const query = `
-    query Artists {
+ query Artists {
       artists(
         pagination: { page: 1, pageSize: 100},
-        sort: "id:DESC"
+        sort: "catalogNumber:DESC"
       ) {
-        data {
-          id,
-          attributes {
-            name,
-            niceName,
-            albumName,
-            albumImage {
-              data {
-                attributes {
-                  url
-                }
-              }
-            }
-            releaseDate,
-            slug
-          }
+          catalogNumber
+          name,
+          niceName,
+          albumName,
+          releaseDate,
+          slug
         }
-      }
     }
   `
   const data = await fetchApi(query)
-  return data?.artists?.data
+  return data?.artists
 }
 
 export async function getAllArtistSlugs() {
   const query = `
     query Artists {
       artists(pagination: { page: 1, pageSize: 100 }) {
-        data {
-          attributes {
-            slug
-          }
-        }
+          slug
       }
     }
   `
   const data = await fetchApi(query)
-  return data?.artists?.data
+  return data?.artists
 }
 
 export async function getArtistBySlug(slug) {
   const query = `
   query Artists {
     artists(filters: { slug: { eq: "${slug}"}}) {
-      data {
-        id,
-        attributes {
           slug,
           niceName,
+          catalogNumber
           featuredSongName,
           featuredSongUrl,
           releaseDate,
@@ -91,20 +74,11 @@ export async function getArtistBySlug(slug) {
           nextArtistSlug,
           nextArtistLinkText,
           description,
-          albumImage {
-            data {
-              attributes {
-                url
-              }
-            }
-          },
           albumName
-        }
-      }
     }
   }
   `
   const data = await fetchApi(query)
   
-  return data?.artists?.data
+  return data?.artists
 }

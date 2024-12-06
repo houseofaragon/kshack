@@ -33,8 +33,7 @@ export async function getStaticProps({params}) {
   return {
     props: {
       artistData: {
-        id: data.id,
-        ...data.attributes
+        ...data
       }
     }
   }
@@ -42,7 +41,7 @@ export async function getStaticProps({params}) {
 
 export async function getStaticPaths() {
   const slugs = await getAllArtistSlugs()
-  const paths = slugs.map(artist => `/releases/${artist.attributes.slug}`)
+  const paths = slugs.map(artist => `/releases/${artist.slug}`)
 
   return {
     paths,

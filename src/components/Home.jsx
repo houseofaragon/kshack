@@ -9,7 +9,7 @@ export function Home() {
      <div className="main-image">
       <div className='announcement'>
           <p>Hi, we're KSHACK.</p>
-          <p>Our latest release is <a href='/releases/504-aquatic-entropy-lock'>Entropy Lock by 504 Aquatic</a>.</p>
+          <p>Our latest release is <a href='/releases/negative-supply-les-glaneurs'>Les Glaneurs by Negative Supply</a>.</p>
       </div>
       <Canvas onCreated={state => state.gl.setClearColor(new THREE.Color( 0xfefefe ))} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 10 }}
       >
