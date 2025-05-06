@@ -1,22 +1,13 @@
 import * as THREE from 'three'
 import React, { useRef, useEffect, useMemo } from 'react'
 import { extend, useThree, useFrame } from '@react-three/fiber'
-import { EffectComposer, SSAO, Bloom, FXAA, Glitch, Vignette, Noise, DepthOfField } from '@react-three/postprocessing';
-import {
-  ShaderPass,
-  RenderPass,
-  UnrealBloomPass,
-  SSAOPass,
-} from 'postprocessing';
-
-extend({ EffectComposer, ShaderPass, RenderPass, UnrealBloomPass, SSAOPass });
+import { EffectComposer, SSAO, Bloom, Vignette, Noise } from '@react-three/postprocessing';
 
 export default function Effects() {
   const { size } = useThree()
 
   return (
     <EffectComposer>
-      {/* Strong bloom for blown-out glow */}
       <Bloom
         intensity={2.2}             
         luminanceThreshold={0.2}    
@@ -35,9 +26,7 @@ export default function Effects() {
         offset={0.2}              
         darkness={0.8}            
       />
-
       <Noise opacity={0.2} />
-      {/* <DepthOfField focusDistance={0} focalLength={0.02} bokehScale={2} /> */}
     </EffectComposer>
   )
 }
