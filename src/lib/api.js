@@ -15,7 +15,7 @@ async function fetchApi(query) {
   const data = await response.json()
 
   if (data.errors) {
-    throw new Error(`Failed to fetch data: ${data.errors}`)
+    throw new Error(`Failed to fetch data: ${JSON.stringify(data.errors, null, 4)}`)
   }
 
   return data.data
@@ -23,57 +23,43 @@ async function fetchApi(query) {
 
 export async function getAllArtists() {
   const query = `
-    query Artists {
-      artists {
-        data {
-          id,
-          attributes {
-            name,
-            niceName,
-            albumName,
-            albumImage {
-              data {
-                attributes {
-                  url
-                }
-              }
-            }
-            slug
-          }
+ query Artists {
+      artists(
+        pagination: { page: 1, pageSize: 100},
+        sort: "catalogNumber:DESC"
+      ) {
+          catalogNumber
+          name,
+          niceName,
+          albumName,
+          releaseDate,
+          slug
         }
-      }
     }
   `
-
   const data = await fetchApi(query)
-  return data?.artists?.data
+  return data?.artists
 }
 
 export async function getAllArtistSlugs() {
   const query = `
     query Artists {
-      artists {
-        data {
-          attributes {
-            slug
-          }
-        }
+      artists(pagination: { page: 1, pageSize: 100 }) {
+          slug
       }
     }
   `
   const data = await fetchApi(query)
-  return data?.artists?.data
+  return data?.artists
 }
 
 export async function getArtistBySlug(slug) {
   const query = `
   query Artists {
     artists(filters: { slug: { eq: "${slug}"}}) {
-      data {
-        id,
-        attributes {
           slug,
           niceName,
+          catalogNumber
           featuredSongName,
           featuredSongUrl,
           releaseDate,
@@ -82,22 +68,17 @@ export async function getArtistBySlug(slug) {
           producer,
           bandcampUrl,
           soundcloudUrl,
+          soundcloudPlaylistId,
+          prevArtistSlug,
+          prevArtistLinkText,
           nextArtistSlug,
           nextArtistLinkText,
-          albumImage {
-            data {
-              attributes {
-                url
-              }
-            }
-          },
+          description,
           albumName
-        }
-      }
     }
   }
   `
   const data = await fetchApi(query)
   
-  return data?.artists?.data
+  return data?.artists
 }

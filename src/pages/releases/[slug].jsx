@@ -1,14 +1,21 @@
-import { ArtistPage } from "@/components/ArtistPage";
+import { ArtistPage } from "@/components/ReleasePage";
 import { Layout } from "@/components/Layout";
 import { getAllArtistSlugs, getArtistBySlug } from "@/lib/api";
+import Head from "next/head"
 
 export default function Index({artistData}) {
   return (
-    <Layout>
-    {!artistData ? <div> oops! </div>
-    : <ArtistPage artistData={artistData} />}
-    </Layout>
-
+    !artistData ?
+      (<div> oops! </div>)
+      : 
+      (
+        <Layout>
+          <Head>
+            <title>{artistData.niceName} - {artistData.albumName}</title>
+          </Head>
+          <ArtistPage artistData={artistData} />
+        </Layout>
+      )
   )
 }
 
@@ -26,8 +33,7 @@ export async function getStaticProps({params}) {
   return {
     props: {
       artistData: {
-        id: data.id,
-        ...data.attributes
+        ...data
       }
     }
   }
@@ -35,7 +41,7 @@ export async function getStaticProps({params}) {
 
 export async function getStaticPaths() {
   const slugs = await getAllArtistSlugs()
-  const paths = slugs.map(artist => `/artists/${artist.attributes.slug}`)
+  const paths = slugs.map(artist => `/releases/${artist.slug}`)
 
   return {
     paths,
