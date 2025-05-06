@@ -19,3 +19,5 @@ module.exports = {
     return paths;
   }
 }
+
+module.exports = nextConfig;
