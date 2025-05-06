@@ -1,27 +1,44 @@
 import * as THREE from 'three'
 import React, { useRef, useEffect, useMemo } from 'react'
 import { extend, useThree, useFrame } from '@react-three/fiber'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
-import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
-import { SSAOPass } from 'three/examples/jsm/postprocessing/SSAOPass'
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass'
-import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
+import { EffectComposer, SSAO, Bloom, FXAA, Glitch, Vignette, Noise, DepthOfField } from '@react-three/postprocessing';
+import {
+  ShaderPass,
+  RenderPass,
+  UnrealBloomPass,
+  SSAOPass,
+} from 'postprocessing';
 
-extend({ EffectComposer, ShaderPass, RenderPass, UnrealBloomPass, SSAOPass })
+extend({ EffectComposer, ShaderPass, RenderPass, UnrealBloomPass, SSAOPass });
 
 export default function Effects() {
-  const composer = useRef()
-  const { scene, gl, size, camera } = useThree()
-  useEffect(() => void composer.current.setSize(size.width, size.height), [size])
-  useFrame(() => composer.current.render(), 1)
+  const { size } = useThree()
+
   return (
-    <effectComposer ref={composer} args={[gl]}>
-      <renderPass attachArray="passes" scene={scene} camera={camera} />
-      <sSAOPass attachArray="passes" args={[scene, camera, 1024, 1024]} kernelRadius={0.8} maxDistance={0.5} />
-      <unrealBloomPass attachArray="passes" args={[undefined, 1.1, 0, 0.5]} />
-      <shaderPass attachArray="passes" args={[FXAAShader]} material-uniforms-resolution-value={[1 / size.width, 1 / size.height]} />
-    </effectComposer>
+    <EffectComposer>
+      {/* Strong bloom for blown-out glow */}
+      <Bloom
+        intensity={2.2}             
+        luminanceThreshold={0.2}    
+        luminanceSmoothing={0.8}    
+        mipmapBlur={true}
+      />
+      <SSAO
+        samples={16}               
+        radius={0.2}
+        intensity={10}             
+        luminanceInfluence={0.6}
+        color="black"
+      />
+      <Vignette
+        eskil={false}
+        offset={0.2}              
+        darkness={0.8}            
+      />
+
+      <Noise opacity={0.2} />
+      {/* <DepthOfField focusDistance={0} focalLength={0.02} bokehScale={2} /> */}
+    </EffectComposer>
   )
 }
 
@@ -44,8 +61,8 @@ function Boxes({ material: Material = 'meshStandardMaterial', amount = 100, spre
 
   return (
     <instancedMesh ref={mesh} args={[null, null, amount]} {...props} receiveShadow castShadow>
-      <boxBufferGeometry attach="geometry" args={[randomX, randomY, 0.1]}/>
-      <Material attach="material" color={color} roughness={1} />
+      <boxGeometry attach="geometry" args={[randomX, randomY, 0.1]}/>
+      <meshStandardMaterial attach="material" color={color} roughness={1} />
     </instancedMesh>
   )
 }
