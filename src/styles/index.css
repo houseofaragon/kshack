@@ -168,13 +168,6 @@ img {
        animation: fadein 5s;
 }
 
-.item__image-wrap {
-  position: absolute;
-  left: 50%;
-  top: 55%;
-  transform: translate(-50%, -50%);
-}
-
 .item:hover{
   border-bottom: 2px solid #000;
   border-right: 2px solid #000;

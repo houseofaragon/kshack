@@ -9,7 +9,7 @@ export function Home() {
      <div className="main-image">
       <div className='announcement'>
           <p>Hi, we're KSHACK.</p>
-          <p>Our latest release is <a href='/releases/ronnie-makebelieve-summer-triangle'>Summer Triangle by Ronnie Makebelieve</a>.</p>
+          <p>Our latest release is <a href='/releases/clairaudience-letters-from-emptiness'>Letters from Emptiness by Clairaudience</a>.</p>
       </div>
       <Canvas onCreated={state => state.gl.setClearColor(new THREE.Color( 0xfefefe ))} shadows dpr={[1, 2]} camera={{ position: [0, 0, 8], far: 10 }}>
         <Blob position={[0, 0, -20]} scale={[10, 10, 10]}/>
