@@ -50,9 +50,11 @@ export async function getStaticProps({params}) {
     .slice()
     .sort((a, b) => a._catalogNumber - b._catalogNumber)
   const currentIndex = sortedArtists.findIndex(artist => artist.slug === data.slug)
-  const prevArtist = currentIndex > 0 ? sortedArtists[currentIndex - 1] : null
-  const nextArtist = currentIndex >= 0 && currentIndex < sortedArtists.length - 1
-    ? sortedArtists[currentIndex + 1]
+  const prevArtist = sortedArtists.length
+    ? sortedArtists[(currentIndex - 1 + sortedArtists.length) % sortedArtists.length]
+    : null
+  const nextArtist = sortedArtists.length
+    ? sortedArtists[(currentIndex + 1) % sortedArtists.length]
     : null
 
   return {
