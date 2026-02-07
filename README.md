@@ -1,35 +1,45 @@
-# Project Name
+# KShack
 
 ## Description
 Welcome! This is the repo for NYC based record label KShack.
 
 ## Installation
 ```bash
-# Install dependencies
-npm i
+# Install dependencies (preferred)
+yarn install
 ```
 
 ## Usage
-Run the project.
-
 ```bash
 # Run the project
-npm run dev
+yarn dev
 ```
-## Build / Export
 
-First build:
+## Build
 
 ```bash
-# Run the project
-npm run build-export
+# Build the project
+yarn build
 ```
 
-Commit and push all changes to a Github branch to kick off a deploy on [Netlify](https://app.netlify.com/sites/kshack/deploys):
+## Deploy
+Commit and push all changes to a Github branch to kick off a deploy on Netlify:
 
 ```
 https://app.netlify.com/sites/kshack/deploys
 ```
+
+## Releases Data
+Releases are now stored in a committed JSON config:
+
+- `src/data/releases.json`
+
+When updating releases, edit this file directly and ensure each release has:
+`slug`, `artist`, `release`, `catalogNumber`, `releaseDate`, `bandcampUrl`,
+`soundcloudUrl`, `soundcloudPlaylistId`, and `description` as needed.
+
+Cover images are loaded from S3 by slug:
+`https://kshack-assets.s3.amazonaws.com/<slug>.png`
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

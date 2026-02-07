@@ -9,6 +9,13 @@
 
 # production
 /build
+/out
+
+# yarn berry
+/.yarn
+
+# local assets
+*.png
 
 # misc
 .DS_Store
@@ -39,3 +46,5 @@ report.*.json
 
 # .vscode Debugging
 .vscode/*-debug-profile
+
+/out
