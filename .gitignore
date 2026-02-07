@@ -9,6 +9,13 @@
 
 # production
 /build
+/out
+
+# yarn berry
+/.yarn
+
+# local assets
+*.png
 
 # misc
 .DS_Store
