@@ -47,7 +47,7 @@ export function Artists({ artists }) {
                 <h2 className="item__artist"><em>by</em> {niceName}</h2>
                 <p className='absolute bottom-5 sm:hidden'>{releaseDate}</p>
               </div>
-              <div className='lg:m-10 m-1 lg:block md:block'>
+              <div className='item__image-wrap'>
                   <ArtistImage src={imgSrc} index={index} />
               </div>
             </div>
