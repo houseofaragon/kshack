@@ -392,6 +392,23 @@
       "url": "https://kschk.com/releases/ronnie-makebelieve-summer-triangle",
       "artist": "Ronnie Makebelieve",
       "release": "Summer Triangle"
+    },
+    {
+      "slug": "504-aquatic-urns",
+      "niceName": "504 Aquatic",
+      "albumName": "Urns",
+      "catalogNumber": 24,
+      "releaseDate": "March 26, 2026",
+      "bandcampUrl": "https://kshack.bandcamp.com/album/urns-kschk024",
+      "soundcloudUrl": "https://soundcloud.com/kschk/sets/504-aquatic-urns",
+      "soundcloudPlaylistId": "soundcloud:playlists:2211658583",
+      "description": "“Urns” is a study in the invisible forces. It is 504 Aquatic's first full-length album.",
+      "producer": "504 Aquatic",
+      "masteredBy": "Stephan Mathieu",
+      "coverArtist": "Salem Hilal",
+      "url": "https://kschk.com/releases/504-aquatic-urns",
+      "artist": "504 Aquatic",
+      "release": "Urns"
     }
   ]
 }
