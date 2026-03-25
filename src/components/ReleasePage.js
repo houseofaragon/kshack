@@ -59,7 +59,7 @@ export function ArtistPage({artistData}) {
        
         <div className='pt-5'>
           {description ? description.split('\n').map((paragraph, index) => (
-            <p key={index} style={{ marginBottom: '1em', lineHeight: '1.6' }}>{paragraph}</p>
+            <p key={index} style={{ marginBottom: '1em', lineHeight: '1.6' }} dangerouslySetInnerHTML={{ __html: paragraph }} />
           )) : null}
         </div>
       </div>
