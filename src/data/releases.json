@@ -409,6 +409,23 @@
       "url": "https://kschk.com/releases/504-aquatic-urns",
       "artist": "504 Aquatic",
       "release": "Urns"
+    },
+    {
+      "slug": "alloy-fracture",
+      "niceName": "Alloy",
+      "albumName": "Fracture",
+      "catalogNumber": 25,
+      "releaseDate": "July 24, 2026",
+      "bandcampUrl": "https://kshack.bandcamp.com/album/fracture-kschk025",
+      "soundcloudUrl": "https://soundcloud.com/kschk/sets/alloy-fracture",
+      "soundcloudPlaylistId": "soundcloud:playlists:2272876670",
+      "description": "<i>Fracture</i> finds producer Mike Crowley cracking open the techno idioms he mined on 2023’s <i>Let</i>, with viscous new sounds leaking out. Sonic pan-sifted street noise meets muzzled woofing dublike bass. Fractal gravity pulls on time and depleted canisters of stable sound echo out across free-party fields for those seeking something else.",
+      "producer": "Mike Crowley",
+      "masteredBy": "Stephan Mathieu",
+      "coverArtist": "Mike Crowley",
+      "url": "https://kschk.com/releases/alloy-fracture",
+      "artist": "Alloy",
+      "release": "Fracture"
     }
   ]
 }

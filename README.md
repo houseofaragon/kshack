@@ -41,6 +41,12 @@ When updating releases, edit this file directly and ensure each release has:
 Cover images are loaded from S3 by slug:
 `https://kshack-assets.s3.amazonaws.com/<slug>.png`
 
+For example:
+
+```
+ aws s3 cp <local 500x500.png (no white frame)> s3://kshack-assets/<artist>-<release>.png
+```
+
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
